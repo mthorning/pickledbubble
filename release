@@ -1,0 +1,29 @@
+#!/bin/bash
+set -e 
+source ./.env
+
+rm -rf \
+    ./frontend/__sapper__ \
+    ./backend/.cache \
+    ./backend/build
+
+cd frontend && NODE_ENV=production npm run build 
+
+cd ../backend 
+cp ../.env .
+NODE_ENV=production npm run build
+rm .env
+
+cd ..
+
+rsync --recursive -av --progress --delete \
+    --exclude ".*" \
+    --exclude "node_modules" \
+    --exclude release.sh \
+    --exclude "src" \
+    . vps:~/containers/$APP_NAME/$APP_NAME/
+
+ssh vps << EOF
+    cd ~/containers/$APP_NAME/$APP_NAME
+    docker-compose up -d --build --force-recreate --remove-orphans
+EOF
