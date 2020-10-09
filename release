@@ -19,9 +19,11 @@ build backend
 build frontend
 
 rsync --recursive -av --progress --delete \
+    --include .env \
     --exclude ".*" \
     --exclude "node_modules" \
     --exclude release.sh \
+    --exclude backend/public/ \
     --exclude "src" \
     . vps:~/containers/$APP_NAME/$APP_NAME/
 

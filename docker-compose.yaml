@@ -16,6 +16,8 @@ services:
       NODE_ENV: production
     depends_on:
       - mongo
+    volumes:
+      - ../uploads:/srv/app/public/uploads
 
   frontend:
     build: ./frontend
@@ -23,6 +25,7 @@ services:
     container_name: ${FE_CONTAINER_NAME}
     environment:
       API_URL: ${API_URL}
+      BACKEND_HOST: ${BE_CONTAINER_NAME}
       PUBLIC_URL: ${PUBLIC_URL}
       NODE_ENV: production
     ports:
