@@ -22,7 +22,7 @@ services:
     restart: always
     container_name: ${FE_CONTAINER_NAME}
     environment:
-      API_URL: http://${BE_CONTAINER_NAME}:1337
+      API_URL: ${API_URL}
       PUBLIC_URL: ${PUBLIC_URL}
       NODE_ENV: production
     ports:

@@ -2,7 +2,7 @@ import { gql, GraphQLClient } from "graphql-request";
 
 const dev = process.env.NODE_ENV === "development";
 const client = new GraphQLClient(
-  `${process.env.PUBLIC_URL || "http://localhost:3000"}/api/graphql`
+  `${process.env.API_URL || "http://localhost:3000"}/api/graphql`
 );
 
 export default function request(query, res) {

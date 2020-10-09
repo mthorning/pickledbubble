@@ -1,20 +1,22 @@
 #!/bin/bash
 set -e 
+
 source ./.env
+
+build() {
+    cp ./.env $1
+    cd $1 
+    NODE_ENV=production npm run build && rm .env
+    cd ..
+}
 
 rm -rf \
     ./frontend/__sapper__ \
     ./backend/.cache \
     ./backend/build
 
-cd frontend && NODE_ENV=production npm run build 
-
-cd ../backend 
-cp ../.env .
-NODE_ENV=production npm run build
-rm .env
-
-cd ..
+build backend
+build frontend
 
 rsync --recursive -av --progress --delete \
     --exclude ".*" \
