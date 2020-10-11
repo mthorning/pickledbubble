@@ -15,8 +15,7 @@ rm -rf \
     ./backend/.cache \
     ./backend/build
 
-build backend
-build frontend
+build backend && build frontend
 
 rsync --recursive -av --progress --delete \
     --include .env \
