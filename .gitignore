@@ -5,4 +5,5 @@ yarn-error.log
 /**/__sapper__/
 /**/build/
 /**/.cache/
+/**/public/uploads/
 .env
