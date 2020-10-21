@@ -31,8 +31,6 @@ export default {
         'process.browser': true,
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.PORT': JSON.stringify(process.env.PORT),
-        'process.env.EMAIL_ADDRESS': JSON.stringify(process.env.EMAIL_ADDRESS),
-        'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
       }),
       svelte({
         dev,
@@ -72,9 +70,9 @@ export default {
       //   }),
 
       !dev &&
-        terser({
-          module: true,
-        })
+      terser({
+        module: true,
+      })
     ],
 
     preserveEntrySignatures: false,

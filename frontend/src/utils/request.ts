@@ -1,11 +1,11 @@
 import { gql, GraphQLClient } from "graphql-request";
 
-const dev = process.env.NODE_ENV === "development";
-const client = new GraphQLClient(
-  `${process.env.PUBLIC_URL || "http://localhost:3000"}/api/graphql`
-);
+import type { Response } from 'express'
 
-export default function request(query, res) {
+const dev = process.env.NODE_ENV === "development";
+const client = new GraphQLClient(`${process.env.API_URL}/graphql`);
+
+export default async function request(query: string, res: Response) {
   return client
     .request(
       gql`

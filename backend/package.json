@@ -1,13 +1,13 @@
 {
-  "name": "app",
+  "name": "pickledbubble-backend",
   "private": true,
   "version": "0.1.0",
-  "description": "A Strapi application",
+  "description": "pickledbubble",
   "scripts": {
     "dev": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "mongo": "docker run --rm -p 27017:27017 -v ~/containers/mongo/pb-data/db:/data/db -e MONGO_INITDB_ROOT_USERNAME=pickledbubble -e MONGO_INITDB_ROOT_PASSWORD=pickledbubble --name mongo mongo > /dev/null",
+    "mongo": "docker run --rm -p 27017:27017 -v ~/containers/mongo/pb-data/db:/data/db --name mongo mongo > /dev/null",
     "strapi": "strapi"
   },
   "devDependencies": {},
