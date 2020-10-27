@@ -31,23 +31,29 @@
   ul {
     line-height: 1.5;
     width: 100%;
+    max-width: 1100px;
     margin: 0 auto;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
   }
   li {
     list-style-type: none;
-    margin: 30px 0;
-    width: 100%;
+    margin: 15px auto;
     padding: 10px;
     box-sizing: border-box;
+    height: 300px;
+    width: 500px;
+    flex: 0 1 auto;
   }
   a {
+    box-sizing: border-box;
     border: 2px solid var(--primary-color);
+    height: 100%;
+    width: 100%;
     margin: auto;
     text-decoration: none;
     padding: 10px 20px;
-    height: 300px;
-    max-width: 600px;
     border: 1px solid var(--text-color);
     border-radius: var(--border-radius);
     display: flex;
