@@ -66,7 +66,7 @@
     <li>
       <a
         rel="prefetch"
-        aria-current={segment.includes('create') ? 'page' : undefined}
+        aria-current={segment?.includes('create') ? 'page' : undefined}
         href="create">create</a>
     </li>
   </ul>
