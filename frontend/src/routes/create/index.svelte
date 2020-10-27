@@ -29,47 +29,40 @@
 
 <style>
   ul {
-    margin: 0;
     line-height: 1.5;
     width: 100%;
-    margin: auto;
+    margin: 0 auto;
+    padding: 0;
   }
   li {
     list-style-type: none;
-    margin-bottom: 30px;
+    margin: 30px 0;
     width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
   }
   a {
-    --padding: 20px;
     border: 2px solid var(--primary-color);
     margin: auto;
     text-decoration: none;
-    padding: 30px;
+    padding: 10px 20px;
     height: 300px;
     max-width: 600px;
-    width: 100%;
-    border: 1px solid #777;
-    display: block;
-    position: relative;
+    border: 1px solid var(--text-color);
+    border-radius: var(--border-radius);
+    display: flex;
+    flex-direction: column;
   }
   h1,
   .bottom-row {
-    position: absolute;
     z-index: 1;
   }
   h1 {
     color: var(--primary-color);
-    top: 10px;
-    bottom: 40px;
-    left: var(--padding);
-    right: var(--padding);
+    margin-bottom: 10px;
   }
   .cover-image {
-    position: absolute;
-    top: 60px;
-    bottom: 50px;
-    right: var(--padding);
-    left: var(--padding);
+    flex: 1 1 auto;
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
@@ -82,10 +75,7 @@
     align-items: center;
   }
   .bottom-row {
-    top: calc(100% - 50px);
-    bottom: 0;
-    right: var(--padding);
-    left: var(--padding);
+    margin-top: 10px;
     justify-content: space-between;
   }
   .rating {

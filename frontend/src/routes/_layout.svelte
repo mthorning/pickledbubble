@@ -9,6 +9,7 @@
     --primary-color: #007c9b;
     --background-color: #fff;
     --text-color: #888;
+    --border-radius: 5px;
     background-color: var(--background-color);
     color: var(--text-color);
   }
@@ -18,15 +19,28 @@
   }
 
   main {
-    position: relative;
-    max-width: 56em;
-    padding: 2em;
-    margin: 0 auto;
+    height: 100vh;
     box-sizing: border-box;
+    padding: 57px 10px 10px 10px;
+  }
+  @media (min-width: 400px) {
+    main {
+      padding: 25px;
+    }
   }
 </style>
 
-<Nav {segment} />
+<Nav
+  style={`
+      --nav-bg-color: var(--background-color);
+      --nav-dropdown-bg: var(--background-color);
+      --nav-dropdown-border: #aaa; 
+      --mobile-button-bg: rgba(255, 255, 255, 0.05);
+      --mobile-button-color: var(--text-color);
+      --nav-selected-underline-color: var(--primary-color);
+      --nav-z-index: 110;
+    `}
+  {segment} />
 
 <main>
   <slot />
