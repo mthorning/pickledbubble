@@ -7,8 +7,10 @@
 <style>
   :global(body) {
     --primary-color: #007c9b;
-    background-color: #fff;
-    color: #888;
+    --background-color: #fff;
+    --text-color: #888;
+    background-color: var(--background-color);
+    color: var(--text-color);
   }
 
   :global(h1) {

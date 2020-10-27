@@ -1,18 +1,23 @@
 <script context="module">
   export async function preload({ params }) {
-    const res = await this.fetch(`blog/${params.slug}.json`);
-    const data = await res.json();
+    const res = await this.fetch(`create/${params.slug}.json`)
+    const data = await res.json()
 
     if (res.status === 200) {
-      return { post: data };
+      return { data }
     } else {
-      this.error(res.status, data.message);
+      this.error(res.status, data.message)
     }
   }
 </script>
 
-<script>
-  export let post;
+<script lang="ts">
+  import ClapButton from '../../components/ClapButton.svelte'
+
+  import type { Data } from './[slug].json'
+
+  export let data: Data
+  const { article } = data
 </script>
 
 <style>
@@ -50,11 +55,12 @@
 </style>
 
 <svelte:head>
-  <title>{post.title}</title>
+  <title>{article.title}</title>
 </svelte:head>
 
-<h1>{post.title}</h1>
+<h1>{article.title}</h1>
 
 <div class="content">
-  {@html post.body}
+  {@html article.body}
 </div>
+<ClapButton id={article.id} claps={article.claps} />

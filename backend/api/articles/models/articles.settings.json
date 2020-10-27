@@ -13,9 +13,6 @@
       "type": "string",
       "required": true
     },
-    "description": {
-      "type": "text"
-    },
     "body": {
       "type": "richtext",
       "required": true
@@ -26,6 +23,29 @@
     },
     "slug": {
       "type": "string"
+    },
+    "difficulty": {
+      "type": "integer",
+      "required": true,
+      "max": 5,
+      "min": 1
+    },
+    "tags": {
+      "collection": "tags",
+      "via": "article"
+    },
+    "coverImage": {
+      "model": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images"
+      ],
+      "plugin": "upload",
+      "required": true
+    },
+    "claps": {
+      "type": "integer",
+      "default": 0
     }
   }
 }

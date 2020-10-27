@@ -1,5 +1,5 @@
-<script>
-  export let segment
+<script lang="ts">
+  export let segment: string
 </script>
 
 <style>
@@ -62,12 +62,12 @@
     </li>
 
     <!-- for the blog link, we're using rel=prefetch so that Sapper prefetches
-		     the blog data when we hover over the link or tap it on a touchscreen -->
+         the blog data when we hover over the link or tap it on a touchscreen -->
     <li>
       <a
         rel="prefetch"
-        aria-current={segment === 'blog' ? 'page' : undefined}
-        href="blog">blog</a>
+        aria-current={segment.includes('create') ? 'page' : undefined}
+        href="create">create</a>
     </li>
   </ul>
 </nav>

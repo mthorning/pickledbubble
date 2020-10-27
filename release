@@ -30,7 +30,6 @@ tar -czvf $APP_NAME.tar.gz \
     ./backend/package-lock.json \
     ./backend/Dockerfile \
     ./backend/api \
-    ./backend/components \
     ./backend/config \
     ./backend/exports \
     ./backend/extensions \

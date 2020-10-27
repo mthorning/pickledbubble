@@ -1,32 +1,56 @@
-import { gql, GraphQLClient } from "graphql-request";
+import { gql, request as authReqest, GraphQLClient } from "graphql-request";
 
 import type { Response } from 'express'
 
-const dev = process.env.NODE_ENV === "development";
-const client = new GraphQLClient(`${process.env.API_URL}/graphql`);
+const endpoint = `${process.env.API_URL}/graphql`
+const client = new GraphQLClient(endpoint);
 
-export default async function request(query: string, res: Response) {
+interface LoginData {
+  login: {
+    jwt: string
+  }
+}
+
+const { NODE_ENV, API_PASSWORD, API_USERNAME } = process.env
+const dev = NODE_ENV === "development";
+
+authReqest(
+  endpoint,
+  gql`
+    mutation {
+      login(input: { identifier: "${API_USERNAME}", password: "${API_PASSWORD}" }) {
+        jwt
+      }
+    }
+    `,
+).then((response: LoginData) => {
+  client.setHeader('Authorization', `Bearer ${response?.login?.jwt}`)
+})
+
+
+
+export default async function request(query: string, res?: Response, variables?: { [key: string]: any }) {
   return client
     .request(
-      gql`
-        query {
-            ${query}
-        }       
-      `
+      gql`${query}`,
+      variables
     )
     .catch((error) => {
       console.error("error", error);
       const message =
         (dev && error && error.response && error.response.errors[0].message) ||
         "Not Found";
-      res.writeHead(404, {
-        "Content-Type": "application/json",
-      });
 
-      res.end(
-        JSON.stringify({
-          message,
-        })
-      );
+      if (res) {
+        res.writeHead(404, {
+          "Content-Type": "application/json",
+        });
+
+        res.end(
+          JSON.stringify({
+            message,
+          })
+        );
+      }
     });
 }

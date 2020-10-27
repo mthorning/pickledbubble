@@ -7,10 +7,13 @@ type AdminUser {
 
 input ArticleInput {
   title: String!
-  description: String
   body: String!
   published: Boolean
   slug: String
+  difficulty: Int!
+  tags: [ID]
+  coverImage: ID
+  claps: Int
   created_by: ID
   updated_by: ID
 }
@@ -21,15 +24,42 @@ type Articles {
   createdAt: DateTime!
   updatedAt: DateTime!
   title: String!
-  description: String
   body: String!
   published: Boolean
   slug: String
+  difficulty: Int!
+  coverImage: UploadFile
+  claps: Int
+  tags(sort: String, limit: Int, start: Int, where: JSON): [Tags]
 }
 
 type ArticlesAggregator {
   count: Int
   totalCount: Int
+  sum: ArticlesAggregatorSum
+  avg: ArticlesAggregatorAvg
+  min: ArticlesAggregatorMin
+  max: ArticlesAggregatorMax
+}
+
+type ArticlesAggregatorAvg {
+  difficulty: Float
+  claps: Float
+}
+
+type ArticlesAggregatorMax {
+  difficulty: Float
+  claps: Float
+}
+
+type ArticlesAggregatorMin {
+  difficulty: Float
+  claps: Float
+}
+
+type ArticlesAggregatorSum {
+  difficulty: Float
+  claps: Float
 }
 
 type ArticlesConnection {
@@ -48,13 +78,23 @@ type ArticlesConnectionBody {
   connection: ArticlesConnection
 }
 
+type ArticlesConnectionClaps {
+  key: Int
+  connection: ArticlesConnection
+}
+
+type ArticlesConnectionCoverImage {
+  key: ID
+  connection: ArticlesConnection
+}
+
 type ArticlesConnectionCreatedAt {
   key: DateTime
   connection: ArticlesConnection
 }
 
-type ArticlesConnectionDescription {
-  key: String
+type ArticlesConnectionDifficulty {
+  key: Int
   connection: ArticlesConnection
 }
 
@@ -89,10 +129,12 @@ type ArticlesGroupBy {
   createdAt: [ArticlesConnectionCreatedAt]
   updatedAt: [ArticlesConnectionUpdatedAt]
   title: [ArticlesConnectionTitle]
-  description: [ArticlesConnectionDescription]
   body: [ArticlesConnectionBody]
   published: [ArticlesConnectionPublished]
   slug: [ArticlesConnectionSlug]
+  difficulty: [ArticlesConnectionDifficulty]
+  coverImage: [ArticlesConnectionCoverImage]
+  claps: [ArticlesConnectionClaps]
 }
 
 input createArticleInput {
@@ -109,6 +151,14 @@ input createRoleInput {
 
 type createRolePayload {
   role: UsersPermissionsRole
+}
+
+input createTagInput {
+  data: TagInput
+}
+
+type createTagPayload {
+  tag: Tags
 }
 
 input createUserInput {
@@ -149,6 +199,14 @@ type deleteRolePayload {
   role: UsersPermissionsRole
 }
 
+input deleteTagInput {
+  where: InputID
+}
+
+type deleteTagPayload {
+  tag: Tags
+}
+
 input deleteUserInput {
   where: InputID
 }
@@ -159,10 +217,13 @@ type deleteUserPayload {
 
 input editArticleInput {
   title: String
-  description: String
   body: String
   published: Boolean
   slug: String
+  difficulty: Int
+  tags: [ID]
+  coverImage: ID
+  claps: Int
   created_by: ID
   updated_by: ID
 }
@@ -193,6 +254,13 @@ input editRoleInput {
   type: String
   permissions: [ID]
   users: [ID]
+  created_by: ID
+  updated_by: ID
+}
+
+input editTagInput {
+  name: String
+  article: ID
   created_by: ID
   updated_by: ID
 }
@@ -248,12 +316,15 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Articles | ArticlesConnection | ArticlesAggregator | ArticlesGroupBy | ArticlesConnectionId | ArticlesConnection_id | ArticlesConnectionCreatedAt | ArticlesConnectionUpdatedAt | ArticlesConnectionTitle | ArticlesConnectionDescription | ArticlesConnectionBody | ArticlesConnectionPublished | ArticlesConnectionSlug | createArticlePayload | updateArticlePayload | deleteArticlePayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Articles | ArticlesConnection | ArticlesAggregator | ArticlesAggregatorSum | ArticlesAggregatorAvg | ArticlesAggregatorMin | ArticlesAggregatorMax | ArticlesGroupBy | ArticlesConnectionId | ArticlesConnection_id | ArticlesConnectionCreatedAt | ArticlesConnectionUpdatedAt | ArticlesConnectionTitle | ArticlesConnectionBody | ArticlesConnectionPublished | ArticlesConnectionSlug | ArticlesConnectionDifficulty | ArticlesConnectionCoverImage | ArticlesConnectionClaps | createArticlePayload | updateArticlePayload | deleteArticlePayload | Tags | TagsConnection | TagsAggregator | TagsGroupBy | TagsConnectionId | TagsConnection_id | TagsConnectionCreatedAt | TagsConnectionUpdatedAt | TagsConnectionName | TagsConnectionArticle | createTagPayload | updateTagPayload | deleteTagPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload
 
 type Mutation {
   createArticle(input: createArticleInput): createArticlePayload
   updateArticle(input: updateArticleInput): updateArticlePayload
   deleteArticle(input: deleteArticleInput): deleteArticlePayload
+  createTag(input: createTagInput): createTagPayload
+  updateTag(input: updateTagInput): updateTagPayload
+  deleteTag(input: deleteTagInput): deleteTagPayload
 
   """Create a new role"""
   createRole(input: createRoleInput): createRolePayload
@@ -291,6 +362,9 @@ type Query {
   article(id: ID!): Articles
   articles(sort: String, limit: Int, start: Int, where: JSON): [Articles]
   articlesConnection(sort: String, limit: Int, start: Int, where: JSON): ArticlesConnection
+  tag(id: ID!): Tags
+  tags(sort: String, limit: Int, start: Int, where: JSON): [Tags]
+  tagsConnection(sort: String, limit: Int, start: Int, where: JSON): TagsConnection
   files(sort: String, limit: Int, start: Int, where: JSON): [UploadFile]
   filesConnection(sort: String, limit: Int, start: Int, where: JSON): UploadFileConnection
   role(id: ID!): UsersPermissionsRole
@@ -316,6 +390,72 @@ input RoleInput {
   updated_by: ID
 }
 
+input TagInput {
+  name: String!
+  article: ID
+  created_by: ID
+  updated_by: ID
+}
+
+type Tags {
+  id: ID!
+  _id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  article: Articles
+}
+
+type TagsAggregator {
+  count: Int
+  totalCount: Int
+}
+
+type TagsConnection {
+  values: [Tags]
+  groupBy: TagsGroupBy
+  aggregate: TagsAggregator
+}
+
+type TagsConnection_id {
+  key: ID
+  connection: TagsConnection
+}
+
+type TagsConnectionArticle {
+  key: ID
+  connection: TagsConnection
+}
+
+type TagsConnectionCreatedAt {
+  key: DateTime
+  connection: TagsConnection
+}
+
+type TagsConnectionId {
+  key: ID
+  connection: TagsConnection
+}
+
+type TagsConnectionName {
+  key: String
+  connection: TagsConnection
+}
+
+type TagsConnectionUpdatedAt {
+  key: DateTime
+  connection: TagsConnection
+}
+
+type TagsGroupBy {
+  id: [TagsConnectionId]
+  _id: [TagsConnection_id]
+  createdAt: [TagsConnectionCreatedAt]
+  updatedAt: [TagsConnectionUpdatedAt]
+  name: [TagsConnectionName]
+  article: [TagsConnectionArticle]
+}
+
 """A time string with format: HH:mm:ss.SSS"""
 scalar Time
 
@@ -335,6 +475,15 @@ input updateRoleInput {
 
 type updateRolePayload {
   role: UsersPermissionsRole
+}
+
+input updateTagInput {
+  where: InputID
+  data: editTagInput
+}
+
+type updateTagPayload {
+  tag: Tags
 }
 
 input updateUserInput {

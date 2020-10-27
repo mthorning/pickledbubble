@@ -1,15 +1,26 @@
 import request from "../../utils/request";
 import marked from "marked";
 
+export interface Data {
+  article: {
+    id: string,
+    title: string,
+    body: string,
+    claps: number
+  }
+}
+
 export function get(req, res, next) {
-  // // the `slug` parameter is available because
-  // // this file is called [slug].json.js
   const { slug } = req.params;
   request(
     `
-        articles(where: { slug: "${slug}" }) {
-          title
-          body
+        {
+            articles(where: { slug: "${slug}" }) {
+            id
+            title
+            body
+            claps
+          }
         }
     `,
     res
@@ -22,7 +33,9 @@ export function get(req, res, next) {
         articles: [article],
       } = response;
 
-      res.end(JSON.stringify({ ...article, body: marked(article.body) }));
+      const data: Data = { article: { ...article, body: marked(article.body) } }
+
+      res.end(JSON.stringify(data));
     }
   });
 }
