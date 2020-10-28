@@ -13,15 +13,22 @@ interface Article {
   }
 }
 
+export interface Tag {
+  name: string,
+  category: string
+}
+
 export interface Data {
-  articles: Article[]
+  articles: Article[],
 }
 
 export function get(req, res) {
+  const { tags } = req.query
+
   request(
     `
         {
-          articles(sort: "created_at:desc", where: {published: true}) {
+          articlesByTag(tags: ["christmas"], sort: "created_at:desc", where: {published: true}) {
               slug
               title
               difficulty
@@ -38,13 +45,14 @@ export function get(req, res) {
     `,
     res
   ).then(response => {
+    console.log(response)
     if (response) {
       res.writeHead(200, {
         "Content-Type": "application/json",
       });
 
       const data: Data = {
-        articles: response.articles.map(({ coverImage, ...article }) => ({
+        articles: response.articlesByTag.map(({ coverImage, ...article }) => ({
           ...article,
           ...(coverImage ? {
             coverImage: {

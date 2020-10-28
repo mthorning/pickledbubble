@@ -1,8 +1,8 @@
 {
 	"background_color": "#ffffff",
 	"theme_color": "#333333",
-	"name": "Matt Thorning Photography",
-	"short_name": "MT Photos",
+	"name": "PickledBubble",
+	"short_name": "PB",
 	"display": "minimal-ui",
 	"start_url": "/",
 	"icons": [

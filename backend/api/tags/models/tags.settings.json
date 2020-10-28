@@ -15,9 +15,17 @@
       "unique": true,
       "regex": "[a-zA-Z0-9]"
     },
-    "article": {
+    "category": {
+      "type": "enumeration",
+      "enum": [
+        "theme",
+        "type"
+      ],
+      "required": true
+    },
+    "articles": {
       "via": "tags",
-      "model": "articles"
+      "collection": "articles"
     }
   }
 }

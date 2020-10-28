@@ -5,4 +5,12 @@
  * to customize this service
  */
 
-module.exports = {};
+module.exports = {
+  async findByTag(params, populate) {
+    const { tags: name, where = {}, sort = [] } = params
+
+    const tags = name?.length ? await strapi.query('tags').find({ name }) : []
+    return strapi.query('articles')
+      .find({ ...(tags.length ? tags : {}), ...where, _sort: sort })
+  },
+};

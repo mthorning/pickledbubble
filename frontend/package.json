@@ -1,6 +1,5 @@
 {
-  "name": "mattthorningphotography-frontend",
-  "description": "mattthorningphotography",
+  "name": "pickledbubble-frontend",
   "version": "0.0.1",
   "engines": {
     "node": "14.x"

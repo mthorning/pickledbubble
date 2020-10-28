@@ -1,9 +1,9 @@
 import { gql, request as authReqest, GraphQLClient } from "graphql-request";
 
 import type { Response } from 'express'
+import type { resolve } from "path";
 
 const endpoint = `${process.env.API_URL}/graphql`
-const client = new GraphQLClient(endpoint);
 
 interface LoginData {
   login: {
@@ -14,22 +14,30 @@ interface LoginData {
 const { NODE_ENV, API_PASSWORD, API_USERNAME } = process.env
 const dev = NODE_ENV === "development";
 
-authReqest(
-  endpoint,
-  gql`
+const authClient: Promise<GraphQLClient> = new Promise(resolve => {
+  authReqest(
+    endpoint,
+    gql`
     mutation {
       login(input: { identifier: "${API_USERNAME}", password: "${API_PASSWORD}" }) {
         jwt
       }
     }
     `,
-).then((response: LoginData) => {
-  client.setHeader('Authorization', `Bearer ${response?.login?.jwt}`)
+  ).then((response: LoginData) => {
+    const client = new GraphQLClient(endpoint, {
+      headers: {
+        'Authorization': `Bearer ${response?.login?.jwt}`
+      }
+    })
+    resolve(client)
+  })
 })
 
 
 
 export default async function request(query: string, res?: Response, variables?: { [key: string]: any }) {
+  const client = await authClient
   return client
     .request(
       gql`${query}`,

@@ -30,10 +30,6 @@
       "max": 5,
       "min": 1
     },
-    "tags": {
-      "collection": "tags",
-      "via": "article"
-    },
     "coverImage": {
       "model": "file",
       "via": "related",
@@ -46,6 +42,19 @@
     "claps": {
       "type": "integer",
       "default": 0
+    },
+    "timeToComplete": {
+      "type": "decimal",
+      "required": true
+    },
+    "requiredItems": {
+      "type": "richtext",
+      "required": false
+    },
+    "tags": {
+      "collection": "tags",
+      "via": "articles",
+      "dominant": true
     }
   }
 }
