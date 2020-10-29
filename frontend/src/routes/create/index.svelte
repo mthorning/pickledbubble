@@ -1,6 +1,6 @@
 <script context="module" lang="ts">
   export async function preload({ query: { tags } }) {
-    const res = await this.fetch(`/create.json?tags=${tags}`)
+    const res = await this.fetch(`/create.json${tags ? `?tags=${tags}` : ''}`)
     const data = await res.json()
 
     if (res.status === 200) {
@@ -112,9 +112,7 @@
 </svelte:head>
 
 <section>
-  <TagFilter
-    selectedTags={data.selectedTags}
-    unselectedTags={data.unselectedTags} />
+  <TagFilter tags={data.categorisedTags} />
 
   {#if !articles || !articles.length}
     <p>No posts here, check back soon!</p>

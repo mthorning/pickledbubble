@@ -5,19 +5,6 @@
 </script>
 
 <style>
-  :global(body) {
-    --primary-color: #007c9b;
-    --background-color: #fff;
-    --text-color: #888;
-    --border-radius: 5px;
-    background-color: var(--background-color);
-    color: var(--text-color);
-  }
-
-  :global(h1) {
-    color: var(--primary-color);
-  }
-
   main {
     height: 100vh;
     box-sizing: border-box;

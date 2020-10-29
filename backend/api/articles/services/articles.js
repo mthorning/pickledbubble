@@ -11,6 +11,6 @@ module.exports = {
 
     const tags = name?.length ? await strapi.query('tags').find({ name }) : []
     return strapi.query('articles')
-      .find({ ...(tags.length ? tags : {}), ...where, _sort: sort })
+      .find({ ...(tags.length ? { tags } : {}), ...where, _sort: sort })
   },
 };

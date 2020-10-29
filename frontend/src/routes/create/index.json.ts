@@ -20,15 +20,24 @@ export interface Tag {
 
 export interface Data {
   articles: Article[],
+  categorisedTags: Tag[][]
 }
 
 export function get(req, res) {
-  const { tags } = req.query
+  const tags = req.query?.tags?.split(',') ?? []
 
   request(
     `
         {
-          articlesByTag(tags: ["christmas"], sort: "created_at:desc", where: {published: true}) {
+          typeTags: tags(where:{ category: "type" }, sort: "name:asc") {
+            name
+            category
+          }
+          themeTags: tags(where:{ category: "theme" }, sort: "name:asc") {
+            name
+            category
+          }
+          articlesByTag(${tags.length ? `tags: ${JSON.stringify(tags)}, ` : ''} sort: "created_at:desc", where: {published: true}) {
               slug
               title
               difficulty
@@ -45,7 +54,6 @@ export function get(req, res) {
     `,
     res
   ).then(response => {
-    console.log(response)
     if (response) {
       res.writeHead(200, {
         "Content-Type": "application/json",
@@ -60,7 +68,8 @@ export function get(req, res) {
               alternativeText: coverImage?.alternativeText
             }
           } : {})
-        }))
+        })),
+        categorisedTags: [response.typeTags, response.themeTags]
       }
       res.end(JSON.stringify(data));
     }
