@@ -1,8 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import FaBars from 'svelte-icons/fa/FaBars.svelte'
-  import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
-  import FaTwitterSquare from 'svelte-icons/fa/FaTwitterSquare.svelte'
 
   interface Route {
     name: string

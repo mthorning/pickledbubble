@@ -1,11 +1,15 @@
 import request from "../../utils/request";
 
-interface Article {
+export interface Tag {
+  name: string,
+  category: string
+}
+
+export interface Article {
   category: string,
   slug: string,
   title: string,
   difficulty: number,
-  tags: string[]
   claps: number,
   coverImage: {
     url: string,
@@ -13,14 +17,11 @@ interface Article {
   }
 }
 
-export interface Tag {
-  name: string,
-  category: string
-}
-
 export interface Data {
   articles: Article[],
-  categorisedTags: Tag[][]
+  tags: {
+    [category: string]: Tag[]
+  }
 }
 
 export function get(req, res) {
@@ -29,20 +30,15 @@ export function get(req, res) {
   request(
     `
         {
-          typeTags: tags(where:{ category: "type" }, sort: "name:asc") {
-            name
-            category
-          }
-          themeTags: tags(where:{ category: "theme" }, sort: "name:asc") {
-            name
-            category
-          }
           articlesByTag(${tags.length ? `tags: ${JSON.stringify(tags)}, ` : ''} sort: "created_at:desc", where: {published: true}) {
               slug
               title
               difficulty
               claps
-              tags {
+              themeTags: tags(where: { category: "theme" }, sort: "name:asc") {
+                name
+              }
+              typeTags: tags(where: { category: "type" }, sort: "name:asc") {
                 name
               }
               coverImage {
@@ -59,6 +55,11 @@ export function get(req, res) {
         "Content-Type": "application/json",
       });
 
+      const byCategory = category => response.articlesByTag.reduce((tags: Tag[], article: Article) => {
+        const result = [...tags, ...article[category]]
+        return result
+      }, [])
+
       const data: Data = {
         articles: response.articlesByTag.map(({ coverImage, ...article }) => ({
           ...article,
@@ -69,7 +70,10 @@ export function get(req, res) {
             }
           } : {})
         })),
-        categorisedTags: [response.typeTags, response.themeTags]
+        tags: {
+          type: byCategory('typeTags'),
+          theme: byCategory('themeTags')
+        }
       }
       res.end(JSON.stringify(data));
     }

@@ -12,6 +12,8 @@
 </script>
 
 <script lang="ts">
+  import IoIosHourglass from 'svelte-icons/io/IoIosHourglass.svelte'
+  import GiScissors from 'svelte-icons/gi/GiScissors.svelte'
   import ClapButton from '../../components/ClapButton.svelte'
 
   import type { Data } from './[slug].json'
@@ -52,6 +54,11 @@
     margin: 2em auto;
     display: block;
   }
+  .icon {
+    height: 20px;
+    width: 20px;
+    color: var(--primary-color);
+  }
 </style>
 
 <svelte:head>
@@ -59,6 +66,12 @@
 </svelte:head>
 
 <h1>{article.title}</h1>
+<div class="icon">
+  <IoIosHourglass />
+</div>
+<div class="icon">
+  <GiScissors />
+</div>
 
 <div class="content">
   {@html article.body}

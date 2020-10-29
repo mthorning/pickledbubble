@@ -11,10 +11,12 @@ module.exports = {
 
     if (tags?.length) {
       const dbTags = await strapi.query('tags').model.find({ name: tags }, { _id: 1 })
-      console.log(tags, dbTags)
-      return strapi.query('articles').model
-        .find(where).where('tags').all(dbTags)
-        .sort(JSON.stringify(`{${sort}}`))
+
+      const articleIds = await strapi.query('articles').model
+        .find().where('tags').all(dbTags)
+
+      return strapi.query('articles')
+        .find({ id: articleIds, ...where, _sort: sort })
     }
 
     return strapi.query('articles')

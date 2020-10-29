@@ -24,12 +24,6 @@
     "slug": {
       "type": "string"
     },
-    "difficulty": {
-      "type": "integer",
-      "required": true,
-      "max": 5,
-      "min": 1
-    },
     "coverImage": {
       "model": "file",
       "via": "related",
@@ -55,6 +49,14 @@
       "collection": "tags",
       "via": "articles",
       "dominant": true
+    },
+    "difficulty": {
+      "type": "enumeration",
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ]
     }
   }
 }

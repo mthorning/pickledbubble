@@ -10,12 +10,12 @@ input ArticleInput {
   body: String!
   published: Boolean
   slug: String
-  difficulty: Int!
   coverImage: ID
   claps: Int
   timeToComplete: Float!
   requiredItems: String
   tags: [ID]
+  difficulty: ENUM_ARTICLES_DIFFICULTY
   created_by: ID
   updated_by: ID
 }
@@ -29,11 +29,11 @@ type Articles {
   body: String!
   published: Boolean
   slug: String
-  difficulty: Int!
   coverImage: UploadFile
   claps: Int
   timeToComplete: Float!
   requiredItems: String
+  difficulty: ENUM_ARTICLES_DIFFICULTY
   tags(sort: String, limit: Int, start: Int, where: JSON): [Tags]
 }
 
@@ -47,25 +47,21 @@ type ArticlesAggregator {
 }
 
 type ArticlesAggregatorAvg {
-  difficulty: Float
   claps: Float
   timeToComplete: Float
 }
 
 type ArticlesAggregatorMax {
-  difficulty: Float
   claps: Float
   timeToComplete: Float
 }
 
 type ArticlesAggregatorMin {
-  difficulty: Float
   claps: Float
   timeToComplete: Float
 }
 
 type ArticlesAggregatorSum {
-  difficulty: Float
   claps: Float
   timeToComplete: Float
 }
@@ -102,7 +98,7 @@ type ArticlesConnectionCreatedAt {
 }
 
 type ArticlesConnectionDifficulty {
-  key: Int
+  key: String
   connection: ArticlesConnection
 }
 
@@ -150,11 +146,11 @@ type ArticlesGroupBy {
   body: [ArticlesConnectionBody]
   published: [ArticlesConnectionPublished]
   slug: [ArticlesConnectionSlug]
-  difficulty: [ArticlesConnectionDifficulty]
   coverImage: [ArticlesConnectionCoverImage]
   claps: [ArticlesConnectionClaps]
   timeToComplete: [ArticlesConnectionTimeToComplete]
   requiredItems: [ArticlesConnectionRequiredItems]
+  difficulty: [ArticlesConnectionDifficulty]
 }
 
 input createArticleInput {
@@ -240,12 +236,12 @@ input editArticleInput {
   body: String
   published: Boolean
   slug: String
-  difficulty: Int
   coverImage: ID
   claps: Int
   timeToComplete: Float
   requiredItems: String
   tags: [ID]
+  difficulty: ENUM_ARTICLES_DIFFICULTY
   created_by: ID
   updated_by: ID
 }
@@ -301,6 +297,12 @@ input editUserInput {
   updated_by: ID
 }
 
+enum ENUM_ARTICLES_DIFFICULTY {
+  easy
+  medium
+  hard
+}
+
 enum ENUM_TAGS_CATEGORY {
   theme
   type
@@ -344,7 +346,7 @@ scalar JSON
 """The `Long` scalar type represents 52-bit integers"""
 scalar Long
 
-union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Articles | ArticlesConnection | ArticlesAggregator | ArticlesAggregatorSum | ArticlesAggregatorAvg | ArticlesAggregatorMin | ArticlesAggregatorMax | ArticlesGroupBy | ArticlesConnectionId | ArticlesConnection_id | ArticlesConnectionCreatedAt | ArticlesConnectionUpdatedAt | ArticlesConnectionTitle | ArticlesConnectionBody | ArticlesConnectionPublished | ArticlesConnectionSlug | ArticlesConnectionDifficulty | ArticlesConnectionCoverImage | ArticlesConnectionClaps | ArticlesConnectionTimeToComplete | ArticlesConnectionRequiredItems | createArticlePayload | updateArticlePayload | deleteArticlePayload | Tags | TagsConnection | TagsAggregator | TagsGroupBy | TagsConnectionId | TagsConnection_id | TagsConnectionCreatedAt | TagsConnectionUpdatedAt | TagsConnectionName | TagsConnectionCategory | createTagPayload | updateTagPayload | deleteTagPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload
+union Morph = UsersPermissionsMe | UsersPermissionsMeRole | UsersPermissionsLoginPayload | UserPermissionsPasswordPayload | Articles | ArticlesConnection | ArticlesAggregator | ArticlesAggregatorSum | ArticlesAggregatorAvg | ArticlesAggregatorMin | ArticlesAggregatorMax | ArticlesGroupBy | ArticlesConnectionId | ArticlesConnection_id | ArticlesConnectionCreatedAt | ArticlesConnectionUpdatedAt | ArticlesConnectionTitle | ArticlesConnectionBody | ArticlesConnectionPublished | ArticlesConnectionSlug | ArticlesConnectionCoverImage | ArticlesConnectionClaps | ArticlesConnectionTimeToComplete | ArticlesConnectionRequiredItems | ArticlesConnectionDifficulty | createArticlePayload | updateArticlePayload | deleteArticlePayload | Tags | TagsConnection | TagsAggregator | TagsGroupBy | TagsConnectionId | TagsConnection_id | TagsConnectionCreatedAt | TagsConnectionUpdatedAt | TagsConnectionName | TagsConnectionCategory | createTagPayload | updateTagPayload | deleteTagPayload | UploadFile | UploadFileConnection | UploadFileAggregator | UploadFileAggregatorSum | UploadFileAggregatorAvg | UploadFileAggregatorMin | UploadFileAggregatorMax | UploadFileGroupBy | UploadFileConnectionId | UploadFileConnection_id | UploadFileConnectionCreatedAt | UploadFileConnectionUpdatedAt | UploadFileConnectionName | UploadFileConnectionAlternativeText | UploadFileConnectionCaption | UploadFileConnectionWidth | UploadFileConnectionHeight | UploadFileConnectionFormats | UploadFileConnectionHash | UploadFileConnectionExt | UploadFileConnectionMime | UploadFileConnectionSize | UploadFileConnectionUrl | UploadFileConnectionPreviewUrl | UploadFileConnectionProvider | UploadFileConnectionProvider_metadata | UsersPermissionsPermission | UsersPermissionsRole | UsersPermissionsRoleConnection | UsersPermissionsRoleAggregator | UsersPermissionsRoleGroupBy | UsersPermissionsRoleConnectionId | UsersPermissionsRoleConnection_id | UsersPermissionsRoleConnectionCreatedAt | UsersPermissionsRoleConnectionUpdatedAt | UsersPermissionsRoleConnectionName | UsersPermissionsRoleConnectionDescription | UsersPermissionsRoleConnectionType | createRolePayload | updateRolePayload | deleteRolePayload | UsersPermissionsUser | UsersPermissionsUserConnection | UsersPermissionsUserAggregator | UsersPermissionsUserGroupBy | UsersPermissionsUserConnectionId | UsersPermissionsUserConnection_id | UsersPermissionsUserConnectionCreatedAt | UsersPermissionsUserConnectionUpdatedAt | UsersPermissionsUserConnectionUsername | UsersPermissionsUserConnectionEmail | UsersPermissionsUserConnectionProvider | UsersPermissionsUserConnectionConfirmed | UsersPermissionsUserConnectionBlocked | UsersPermissionsUserConnectionRole | createUserPayload | updateUserPayload | deleteUserPayload
 
 type Mutation {
   createArticle(input: createArticleInput): createArticlePayload

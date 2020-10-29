@@ -12,12 +12,13 @@
 </script>
 
 <script lang="ts">
-  import TagFilter from '../../components/TagFilter.svelte'
+  import TagFilter from '../../components/TagFilter/index.svelte'
 
   import type { Data } from './index.json'
 
   export let data: Data
   $: articles = data.articles
+  $: tags = data.tags
 
   function getDifficulty(difficulty) {
     const icon = '✂'
@@ -112,7 +113,7 @@
 </svelte:head>
 
 <section>
-  <TagFilter tags={data.categorisedTags} />
+  <TagFilter {tags} />
 
   {#if !articles || !articles.length}
     <p>No posts here, check back soon!</p>
