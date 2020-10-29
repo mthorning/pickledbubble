@@ -7,10 +7,17 @@
 
 module.exports = {
   async findByTag(params, populate) {
-    const { tags: name, where = {}, sort = [] } = params
+    const { tags, where = {}, sort = [] } = params
 
-    const tags = name?.length ? await strapi.query('tags').find({ name }) : []
+    if (tags?.length) {
+      const dbTags = await strapi.query('tags').model.find({ name: tags }, { _id: 1 })
+      console.log(tags, dbTags)
+      return strapi.query('articles').model
+        .find(where).where('tags').all(dbTags)
+        .sort(JSON.stringify(`{${sort}}`))
+    }
+
     return strapi.query('articles')
-      .find({ ...(tags.length ? { tags } : {}), ...where, _sort: sort })
+      .find({ ...where, _sort: sort })
   },
 };

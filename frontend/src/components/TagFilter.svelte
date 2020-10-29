@@ -29,7 +29,10 @@
     : [[]]
 
   function updateQueryString(newSelected: string[]) {
-    params.set(queryKey, Array.from(new Set(newSelected)).join(','))
+    params.set(
+      queryKey,
+      Array.from(new Set(newSelected.filter((a) => !!a))).join(',')
+    )
     window.location.search = params.toString()
   }
 
