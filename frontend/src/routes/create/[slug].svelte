@@ -94,7 +94,7 @@
 
 <h1>{article.title}</h1>
 
-{#if article.timeToComplete}
+{#if article?.timeToComplete}
   <div class="meta">
     <div class="icon">
       <IoIosHourglass />
@@ -103,7 +103,7 @@
   </div>
 {/if}
 
-{#if article.difficulty}
+{#if article?.difficulty}
   <div class="meta">
     <div class="icon">
       <GiScissors />
@@ -112,10 +112,12 @@
   </div>
 {/if}
 
-<div class="required-items">
-  <h2>You Will Need:</h2>
-  {@html article.requiredItems}
-</div>
+{#if article?.requiredItems}
+  <div class="required-items">
+    <h2>You Will Need:</h2>
+    {@html article.requiredItems}
+  </div>
+{/if}
 
 <div class="content">
   {@html article.body}

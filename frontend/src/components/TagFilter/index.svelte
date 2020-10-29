@@ -3,6 +3,7 @@
   import TagList from './TagList.svelte'
 
   import type { Tag } from '../../routes/create/index.json'
+  import type { type } from 'os'
 
   export let tags: { [category: string]: Tag[] }
 
@@ -33,16 +34,18 @@
   }
 </style>
 
-<section>
-  <TagList
-    tags={tags.type}
-    style="--color: var(--primary-color);"
-    {updateQueryString}
-    {currentTags} />
+{#if tags.type?.length || tags.theme?.length}
+  <section>
+    <TagList
+      tags={tags.type}
+      style="--color: var(--primary-color);"
+      {updateQueryString}
+      {currentTags} />
 
-  <TagList
-    tags={tags.theme}
-    style="--color: var(--secondary-color);"
-    {updateQueryString}
-    {currentTags} />
-</section>
+    <TagList
+      tags={tags.theme}
+      style="--color: var(--secondary-color);"
+      {updateQueryString}
+      {currentTags} />
+  </section>
+{/if}

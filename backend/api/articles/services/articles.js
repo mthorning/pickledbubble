@@ -7,9 +7,9 @@
 
 module.exports = {
   async findByTag(params, populate) {
-    const { tags, where = {}, sort = [] } = params
+    const { tags = [], where = {}, sort = [] } = params
 
-    if (tags?.length) {
+    if (tags.length) {
       const dbTags = await strapi.query('tags').model.find({ name: tags }, { _id: 1 })
 
       const articleIds = await strapi.query('articles').model
