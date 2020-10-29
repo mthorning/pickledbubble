@@ -29,6 +29,8 @@ services:
       API_URL: ${API_URL}
       PUBLIC_URL: ${PUBLIC_URL}
       NODE_ENV: production
+      API_PASSWORD: ${API_PASSWORD}
+      API_USERNAME: ${API_USERNAME}
     ports:
       - '3001:3000'
     depends_on:
