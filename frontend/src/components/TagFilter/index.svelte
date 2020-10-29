@@ -3,9 +3,9 @@
   import TagList from './TagList.svelte'
 
   import type { Tag } from '../../routes/create/index.json'
-  import type { type } from 'os'
 
-  export let tags: { [category: string]: Tag[] }
+  export let tags: { [category: string]: Tag[] },
+    numArticles: number = 0
 
   const queryKey = 'tags'
 
@@ -26,11 +26,18 @@
     }
     window.location.search = params.toString()
   }
+
+  const pluralise = (str: string, num: number) => `${str}${num > 1 ? 's' : ''}`
 </script>
 
 <style>
   section {
-    height: 100px;
+    min-height: 100px;
+    border-bottom: 1px solid var(--text-color);
+  }
+  div {
+    margin-bottom: 40px;
+    min-height: 25px;
   }
 </style>
 
@@ -48,4 +55,15 @@
       {updateQueryString}
       {currentTags} />
   </section>
+  <div>
+    {#if currentTags.length}
+      {`Found ${numArticles} ${pluralise('post', numArticles)} with the ${pluralise('tag', currentTags.length)} ${currentTags.length > 1 ? [
+              ...currentTags.slice(0, currentTags.length - 1),
+              'and',
+              ...currentTags.slice(-1),
+            ]
+              .join(', ')
+              .replace(', and,', ' and ') : currentTags[0]}`}
+    {/if}
+  </div>
 {/if}

@@ -54,6 +54,18 @@
     margin: 2em auto;
     display: block;
   }
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .title,
+  .required-items {
+    margin-bottom: 30px;
+  }
+  .title {
+    align-self: flex-start;
+  }
   .meta {
     display: flex;
     align-items: center;
@@ -65,6 +77,11 @@
     margin-right: 4px;
   }
   .required-items {
+    flex: 1 0 auto;
+    text-align: center;
+  }
+  .required-items div {
+    margin: auto;
     font-family: 'Caveat', cursive;
     font-size: 25px;
     background-image: linear-gradient(
@@ -79,12 +96,15 @@
     border: 1px solid var(--text-color);
     box-shadow: 1px 1px 5px var(--text-color);
     padding: 25px;
-    margin: 30px;
   }
   .required-items h2 {
     margin-bottom: 25px;
     font-size: 43px;
     color: var(--secondary-color);
+  }
+  .clap {
+    display: flex;
+    justify-content: flex-end;
   }
 </style>
 
@@ -92,34 +112,41 @@
   <title>{article.title}</title>
 </svelte:head>
 
-<h1>{article.title}</h1>
+<div class="top-section">
+  <div class="title">
+    <h1>{article.title}</h1>
 
-{#if article?.timeToComplete}
-  <div class="meta">
-    <div class="icon">
-      <IoIosHourglass />
-    </div>
-    {article.timeToComplete}
+    {#if article?.timeToComplete}
+      <div class="meta">
+        <div class="icon">
+          <IoIosHourglass />
+        </div>
+        {article.timeToComplete}
+      </div>
+    {/if}
+
+    {#if article?.difficulty}
+      <div class="meta">
+        <div class="icon">
+          <GiScissors />
+        </div>
+        {article.difficulty}
+      </div>
+    {/if}
   </div>
-{/if}
-
-{#if article?.difficulty}
-  <div class="meta">
-    <div class="icon">
-      <GiScissors />
-    </div>
-    {article.difficulty}
-  </div>
-{/if}
-
-{#if article?.requiredItems}
   <div class="required-items">
-    <h2>You Will Need:</h2>
-    {@html article.requiredItems}
+    {#if article?.requiredItems}
+      <div>
+        <h2>You Will Need:</h2>
+        {@html article.requiredItems}
+      </div>
+    {/if}
   </div>
-{/if}
+</div>
 
 <div class="content">
   {@html article.body}
 </div>
-<ClapButton id={article.id} claps={article.claps} />
+<div class="clap">
+  <ClapButton id={article.id} claps={article.claps} />
+</div>

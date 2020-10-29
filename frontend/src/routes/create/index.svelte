@@ -12,6 +12,7 @@
 </script>
 
 <script lang="ts">
+  import { fade } from 'svelte/transition'
   import TagFilter from '../../components/TagFilter/index.svelte'
   import GiScissors from 'svelte-icons/gi/GiScissors.svelte'
 
@@ -24,25 +25,31 @@
 
 <style>
   section {
-    max-width: 1100px;
     width: 100%;
     margin: auto;
   }
   ul {
-    line-height: 1.5;
     width: 100%;
-    margin: 0 auto;
     padding: 0;
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, max-content));
+    grid-gap: 16px;
+    justify-content: space-around;
+    padding: initial;
+  }
+  @media (max-width: 600px) {
+    ul {
+      grid-template-columns: repeat(auto-fill, minmax(270px, max-content));
+    }
   }
   li {
     list-style-type: none;
     margin: 15px auto;
     padding: 10px;
     box-sizing: border-box;
+    width: 100%;
+    max-width: 400px;
     height: 300px;
-    width: 500px;
     flex: 0 1 auto;
   }
   a {
@@ -109,11 +116,12 @@
 </svelte:head>
 
 <section>
-  <TagFilter {tags} />
+  <TagFilter {tags} numArticles={articles.length} />
 
   {#if !articles || !articles.length}
     <p>No posts here, check back soon!</p>
   {/if}
+
   <ul>
     {#each articles as article}
       <!-- we're using the non-standard `rel=prefetch` attribute to
@@ -121,7 +129,7 @@
         the user hovers over the link or taps it, instead of
         waiting for the 'click' event -->
       <li>
-        <a rel="prefetch" href={`create/${article.slug}`}>
+        <a transition:fade rel="prefetch" href={`create/${article.slug}`}>
           <h1>{article.title}</h1>
           <div
             class="cover-image"

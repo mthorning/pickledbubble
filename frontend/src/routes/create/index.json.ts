@@ -35,10 +35,10 @@ export function get(req, res) {
               title
               difficulty
               claps
-              themeTags: tags(where: { category: "theme" }, sort: "name:asc") {
+              themeTags: tags(where: { category: "theme" }) {
                 name
               }
-              typeTags: tags(where: { category: "type" }, sort: "name:asc") {
+              typeTags: tags(where: { category: "type" }) {
                 name
               }
               coverImage {
@@ -55,10 +55,16 @@ export function get(req, res) {
         "Content-Type": "application/json",
       });
 
-      const byCategory = category => response.articlesByTag.reduce((tags: Tag[], article: Article) => {
-        const result = [...tags, ...article[category]]
-        return result
+      const hasDuplicate = (tags: Tag[], tag: Tag) => tags.some(t => t.name === tag.name)
+
+      const unique = (masterTags: Tag[], articleTags: Tag[]) => articleTags.reduce((uniq, tag) => {
+        if (hasDuplicate(masterTags, tag) || hasDuplicate(uniq, tag)) return uniq
+        return [...uniq, tag]
       }, [])
+
+      const byCategory: (category: string) => Tag[] = category => response.articlesByTag.reduce((tags: Tag[], article: Article) => (
+        [...tags, ...unique(tags, article[category])]
+      ), []).sort(({ name: b }: Tag, { name: a }: Tag) => a < b ? 1 : a > b ? -1 : 0)
 
       const data: Data = {
         articles: response.articlesByTag.map(({ coverImage, ...article }) => ({

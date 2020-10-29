@@ -7,8 +7,10 @@
 <style>
   main {
     height: 100vh;
+    max-width: 1000px;
+    margin: auto;
     box-sizing: border-box;
-    padding: 57px 10px 10px 10px;
+    padding: calc(57px + 25px) 10px 25px 10px;
   }
   @media (min-width: 400px) {
     main {
