@@ -54,10 +54,37 @@
     margin: 2em auto;
     display: block;
   }
-  .icon {
+  .meta {
+    display: flex;
+    align-items: center;
+  }
+  .meta .icon {
     height: 20px;
     width: 20px;
     color: var(--primary-color);
+    margin-right: 4px;
+  }
+  .required-items {
+    font-family: 'Caveat', cursive;
+    font-size: 25px;
+    background-image: linear-gradient(
+        0deg,
+        transparent 5em,
+        rgba(255, 0, 0, 0.2) 0,
+        transparent 5.1em
+      ),
+      linear-gradient(rgba(0, 0, 255, 0.3) 1px, transparent 0);
+    background-size: 100% 35px;
+    display: inline-block;
+    border: 1px solid var(--text-color);
+    box-shadow: 1px 1px 5px var(--text-color);
+    padding: 25px;
+    margin: 30px;
+  }
+  .required-items h2 {
+    margin-bottom: 25px;
+    font-size: 43px;
+    color: var(--secondary-color);
   }
 </style>
 
@@ -66,11 +93,28 @@
 </svelte:head>
 
 <h1>{article.title}</h1>
-<div class="icon">
-  <IoIosHourglass />
-</div>
-<div class="icon">
-  <GiScissors />
+
+{#if article.timeToComplete}
+  <div class="meta">
+    <div class="icon">
+      <IoIosHourglass />
+    </div>
+    {article.timeToComplete}
+  </div>
+{/if}
+
+{#if article.difficulty}
+  <div class="meta">
+    <div class="icon">
+      <GiScissors />
+    </div>
+    {article.difficulty}
+  </div>
+{/if}
+
+<div class="required-items">
+  <h2>You Will Need:</h2>
+  {@html article.requiredItems}
 </div>
 
 <div class="content">

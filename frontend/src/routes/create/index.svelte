@@ -13,21 +13,13 @@
 
 <script lang="ts">
   import TagFilter from '../../components/TagFilter/index.svelte'
+  import GiScissors from 'svelte-icons/gi/GiScissors.svelte'
 
   import type { Data } from './index.json'
 
   export let data: Data
   $: articles = data.articles
   $: tags = data.tags
-
-  function getDifficulty(difficulty) {
-    const icon = '✂'
-    let rating = ''
-    for (let i = 0; i < difficulty; i++) {
-      rating += icon
-    }
-    return rating
-  }
 </script>
 
 <style>
@@ -93,8 +85,12 @@
   }
   .rating {
     z-index: 1;
-    font-size: 20px;
     color: var(--primary-color);
+  }
+  .rating .icon {
+    margin-right: 4px;
+    height: 20px;
+    width: 20px;
   }
   .claps {
     display: flex;
@@ -142,7 +138,12 @@
               </div>
               {article.claps}
             </div>
-            <div class="rating">{getDifficulty(article.difficulty)}</div>
+            <div class="rating">
+              <div class="icon">
+                <GiScissors />
+              </div>
+              {article.difficulty}
+            </div>
           </div>
         </a>
       </li>

@@ -6,7 +6,10 @@ export interface Data {
     id: string,
     title: string,
     body: string,
-    claps: number
+    claps: number,
+    difficulty: string,
+    timeToComplete: number,
+    requiredItems: string
   }
 }
 
@@ -20,6 +23,9 @@ export function get(req, res, next) {
             title
             body
             claps
+            difficulty
+            timeToComplete
+            requiredItems
           }
         }
     `,
@@ -33,7 +39,7 @@ export function get(req, res, next) {
         articles: [article],
       } = response;
 
-      const data: Data = { article: { ...article, body: marked(article.body) } }
+      const data: Data = { article: { ...article, requiredItems: marked(article.requiredItems), body: marked(article.body) } }
 
       res.end(JSON.stringify(data));
     }

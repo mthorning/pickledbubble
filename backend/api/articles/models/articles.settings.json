@@ -37,10 +37,6 @@
       "type": "integer",
       "default": 0
     },
-    "timeToComplete": {
-      "type": "decimal",
-      "required": true
-    },
     "requiredItems": {
       "type": "richtext",
       "required": false
@@ -57,6 +53,10 @@
         "medium",
         "hard"
       ]
+    },
+    "timeToComplete": {
+      "type": "string",
+      "required": true
     }
   }
 }
