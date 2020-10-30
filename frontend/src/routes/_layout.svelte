@@ -19,7 +19,7 @@
   :global(main a):hover {
     color: var(--secondary-color);
   }
-  @media (min-width: 400px) {
+  @media (min-width: 600px) {
     main {
       padding: 25px;
     }

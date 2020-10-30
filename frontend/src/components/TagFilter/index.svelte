@@ -39,7 +39,7 @@
     margin-bottom: 10px;
     min-height: 25px;
   }
-  @media (min-width: 400px) {
+  @media (min-width: 600px) {
     section {
       border-bottom: 1px solid var(--text-color);
     }

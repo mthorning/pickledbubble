@@ -51,12 +51,11 @@
     z-index: var(--nav-z-index, 1);
   }
   img {
-    height: 50px;
-    width: auto;
     position: absolute;
-    top: 5px;
     left: 50%;
-    transform: translateX(-38%);
+    top: 0;
+    transform: translateX(-50%);
+    height: 57px;
   }
   ul {
     margin: 0;
@@ -111,15 +110,13 @@
   button:focus {
     outline: none;
   }
-  @media (min-width: 400px) {
+  @media (min-width: 600px) {
     nav {
       position: static;
+      height: 90px;
     }
     img {
-      position: absolute;
-      top: 5px;
-      left: initial;
-      right: 5px;
+      height: 90px;
     }
     button {
       display: none;
