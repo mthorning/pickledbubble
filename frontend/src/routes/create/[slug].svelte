@@ -14,7 +14,9 @@
 <script lang="ts">
   import IoIosHourglass from 'svelte-icons/io/IoIosHourglass.svelte'
   import GiScissors from 'svelte-icons/gi/GiScissors.svelte'
+  import IoIosPricetags from 'svelte-icons/io/IoIosPricetags.svelte'
   import ClapButton from '../../components/ClapButton.svelte'
+  import ShareButtons from '../../components/ShareButtons.svelte'
 
   import type { Data } from './[slug].json'
 
@@ -59,6 +61,9 @@
     justify-content: space-between;
     flex-wrap: wrap;
   }
+  .top-section h1 {
+    margin-bottom: 12px;
+  }
   .title,
   .required-items {
     margin-bottom: 30px;
@@ -66,11 +71,13 @@
   .title {
     align-self: flex-start;
   }
-  .meta {
+  .meta,
+  .meta div {
     display: flex;
     align-items: center;
+    margin-right: 10px;
   }
-  .meta .icon {
+  .icon {
     height: 20px;
     width: 20px;
     color: var(--primary-color);
@@ -106,6 +113,29 @@
     display: flex;
     justify-content: flex-end;
   }
+  .clap p {
+    max-width: 250px;
+    display: flex;
+    flex: 1 1;
+    align-items: center;
+  }
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin: 30px 0;
+    flex-wrap: wrap;
+  }
+  .tags {
+    margin-top: 10px;
+    flex: 1;
+    justify-content: flex-end;
+    display: flex;
+    align-items: center;
+  }
+  .tags a {
+    margin-left: 2px;
+  }
 </style>
 
 <svelte:head>
@@ -116,23 +146,25 @@
   <div class="title">
     <h1>{article.title}</h1>
 
-    {#if article?.timeToComplete}
-      <div class="meta">
-        <div class="icon">
-          <IoIosHourglass />
+    <div class="meta">
+      {#if article?.timeToComplete}
+        <div>
+          <div class="icon">
+            <IoIosHourglass />
+          </div>
+          {article.timeToComplete}
         </div>
-        {article.timeToComplete}
-      </div>
-    {/if}
+      {/if}
 
-    {#if article?.difficulty}
-      <div class="meta">
-        <div class="icon">
-          <GiScissors />
+      {#if article?.difficulty}
+        <div>
+          <div class="icon">
+            <GiScissors />
+          </div>
+          {article.difficulty}
         </div>
-        {article.difficulty}
-      </div>
-    {/if}
+      {/if}
+    </div>
   </div>
   <div class="required-items">
     {#if article?.requiredItems}
@@ -147,6 +179,22 @@
 <div class="content">
   {@html article.body}
 </div>
+
 <div class="clap">
+  <p>If you enjoyed this article then let me know with a clap or two!</p>
   <ClapButton id={article.id} claps={article.claps} />
+</div>
+<div class="footer">
+  <ShareButtons title={article.title} />
+  {#if article.tags}
+    <div class="tags">
+      <div class="icon">
+        <IoIosPricetags />
+      </div>
+      {#each article.tags as tag, i}
+        {i > 0 ? ', ' : ''}
+        <a href={`/create?tags=${tag.name}`}>{tag.name}</a>
+      {/each}
+    </div>
+  {/if}
 </div>

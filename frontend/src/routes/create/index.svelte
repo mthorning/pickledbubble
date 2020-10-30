@@ -12,7 +12,6 @@
 </script>
 
 <script lang="ts">
-  import { fade } from 'svelte/transition'
   import TagFilter from '../../components/TagFilter/index.svelte'
   import GiScissors from 'svelte-icons/gi/GiScissors.svelte'
 
@@ -35,7 +34,6 @@
     grid-template-columns: repeat(auto-fill, minmax(400px, max-content));
     grid-gap: 16px;
     justify-content: space-around;
-    padding: initial;
   }
   @media (max-width: 600px) {
     ul {
@@ -129,7 +127,7 @@
         the user hovers over the link or taps it, instead of
         waiting for the 'click' event -->
       <li>
-        <a transition:fade rel="prefetch" href={`create/${article.slug}`}>
+        <a rel="prefetch" href={`create/${article.slug}`}>
           <h1>{article.title}</h1>
           <div
             class="cover-image"

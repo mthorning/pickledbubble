@@ -9,7 +9,7 @@
     "build": "sapper build --legacy",
     "export": "sapper export --legacy",
     "start": "node __sapper__/build",
-    "proxy":"API_URL=https://pickledbubble.thorning.ovh/api npm run dev",
+    "proxy": "API_URL=https://pickledbubble.thorning.ovh/api npm run dev",
     "validate": "svelte-check --ignore src/node_modules/@sapper"
   },
   "dependencies": {
@@ -56,6 +56,7 @@
     "svelte-check": "^1.0.46",
     "svelte-icons": "^2.1.0",
     "svelte-preprocess": "^4.3.0",
+    "svelte-share-buttons-component": "^1.2.0",
     "tslib": "^2.0.1",
     "typescript": "^4.0.3"
   }

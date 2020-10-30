@@ -33,11 +33,19 @@
 <style>
   section {
     min-height: 100px;
-    border-bottom: 1px solid var(--text-color);
+    border-bottom: none;
   }
   div {
-    margin-bottom: 40px;
+    margin-bottom: 10px;
     min-height: 25px;
+  }
+  @media (min-width: 400px) {
+    section {
+      border-bottom: 1px solid var(--text-color);
+    }
+    div {
+      margin-bottom: 40px;
+    }
   }
 </style>
 
@@ -63,7 +71,7 @@
               ...currentTags.slice(-1),
             ]
               .join(', ')
-              .replace(', and,', ' and ') : currentTags[0]}`}
+              .replace(', and,', ' and ') : currentTags[0]}:`}
     {/if}
   </div>
 {/if}

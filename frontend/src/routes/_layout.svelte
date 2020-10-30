@@ -12,6 +12,13 @@
     box-sizing: border-box;
     padding: calc(57px + 25px) 10px 25px 10px;
   }
+  :global(main a) {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  :global(main a):hover {
+    color: var(--secondary-color);
+  }
   @media (min-width: 400px) {
     main {
       padding: 25px;
@@ -20,14 +27,16 @@
 </style>
 
 <Nav
+  isHome={!segment}
   style={`
       --nav-bg-color: var(--background-color);
       --nav-dropdown-bg: var(--background-color);
       --nav-dropdown-border: #aaa; 
       --mobile-button-bg: rgba(255, 255, 255, 0.05);
       --mobile-button-color: var(--text-color);
-      --nav-selected-underline-color: var(--primary-color);
+      --nav-selected-underline-color: var(--secondary-color);
       --nav-z-index: 110;
+      --nav-item-hover-color: var(--secondary-color);
     `}
   {segment} />
 

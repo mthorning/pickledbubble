@@ -9,7 +9,8 @@ export interface Data {
     claps: number,
     difficulty: string,
     timeToComplete: number,
-    requiredItems: string
+    requiredItems: string,
+    tags: { name: string }[]
   }
 }
 
@@ -26,6 +27,9 @@ export function get(req, res, next) {
             difficulty
             timeToComplete
             requiredItems
+            tags {
+              name
+            }
           }
         }
     `,

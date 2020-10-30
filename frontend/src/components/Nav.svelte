@@ -10,7 +10,8 @@
 
   export let segment: string,
     style: string,
-    homePageName: string = 'home'
+    homePageName: string = 'home',
+    isHome: boolean
 
   const routes: Route[] = [
     { name: 'about', href: '/about', regex: new RegExp(/about/) },
@@ -37,17 +38,25 @@
 
 <style>
   nav {
+    display: flex;
+    align-items: center;
     font-weight: 300;
     padding: 0 1em;
-    display: flex;
     box-sizing: border-box;
     width: 100%;
     height: 57px;
-    justify-content: space-between;
     background: var(--nav-bg-color);
     position: fixed;
     top: 0;
     z-index: var(--nav-z-index, 1);
+  }
+  img {
+    height: 50px;
+    width: auto;
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-38%);
   }
   ul {
     margin: 0;
@@ -106,6 +115,12 @@
     nav {
       position: static;
     }
+    img {
+      position: absolute;
+      top: 5px;
+      left: initial;
+      right: 5px;
+    }
     button {
       display: none;
     }
@@ -120,6 +135,9 @@
     .menu-items li {
       display: block;
       float: left;
+    }
+    .menu-items li:hover {
+      color: var(--nav-item-hover-color);
     }
     .menu-items li a {
       width: initial;
@@ -171,4 +189,5 @@
       </li>
     {/each}
   </ul>
+  {#if !isHome}<img alt="pickledbubble logo" src="logo.png" />{/if}
 </nav>

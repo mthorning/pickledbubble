@@ -6,7 +6,6 @@
     style: string,
     updateQueryString: (newSelected: string[]) => void
 
-  console.log(tags)
   $: uniqueTags = tags.reduce((uniq, tag) => {
     if (uniq.some((a) => a.name === tag.name)) return uniq
     return [...uniq, tag]
@@ -24,6 +23,7 @@
 <style>
   ul {
     padding: 0;
+    margin: 0;
     width: 100%;
     height: 50px;
   }
@@ -37,7 +37,9 @@
     cursor: pointer;
     color: var(--color);
     border-color: var(--color);
+    user-select: none;
   }
+  li:hover,
   .selected {
     background-color: var(--color);
     color: var(--background-color);
