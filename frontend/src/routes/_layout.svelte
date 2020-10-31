@@ -26,9 +26,9 @@
   }
 </style>
 
-<Nav
-  isHome={!segment}
-  style={`
+{#if segment}
+  <Nav
+    style={`
       --nav-bg-color: var(--background-color);
       --nav-dropdown-bg: var(--background-color);
       --nav-dropdown-border: #aaa; 
@@ -38,7 +38,8 @@
       --nav-z-index: 110;
       --nav-item-hover-color: var(--secondary-color);
     `}
-  {segment} />
+    {segment} />
+{/if}
 
 <main>
   <slot />

@@ -1,0 +1,8 @@
+PUBLIC_URL=http://localhost:3000
+API_URL=http://localhost:1337
+EMAIL_ADDRESS=matthewthorning@gmail.com
+EMAIL_USERNAME=matthewthorning@gmail.com
+EMAIL_PASSWORD=upzkkptdskpjptxq
+PAYPAL_ID=AbQA2UnTdfu5U_Lbb8Kds0qEOsr45m5tcK498tmqrOBH_o1pn_sy3z8rstJfoFWmCcC-kBK_Ty9AXwNL
+API_PASSWORD=ud7pSS41P6PmIrlQ
+API_USERNAME=test@test.com

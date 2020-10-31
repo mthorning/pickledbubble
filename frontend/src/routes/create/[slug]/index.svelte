@@ -15,10 +15,9 @@
   import IoIosHourglass from 'svelte-icons/io/IoIosHourglass.svelte'
   import GiScissors from 'svelte-icons/gi/GiScissors.svelte'
   import IoIosPricetags from 'svelte-icons/io/IoIosPricetags.svelte'
-  import ClapButton from '../../components/ClapButton.svelte'
-  import ShareButtons from '../../components/ShareButtons.svelte'
+  import ClapButton from '../../../components/ClapButton.svelte'
 
-  import type { Data } from './[slug].json'
+  import type { Data } from './index.json'
 
   export let data: Data
   const { article } = data
@@ -89,6 +88,7 @@
   }
   .required-items div {
     margin: auto;
+    text-align: left;
     font-family: 'Caveat', cursive;
     font-size: 25px;
     background-image: linear-gradient(
@@ -117,21 +117,23 @@
     max-width: 250px;
     display: flex;
     flex: 1 1;
+    text-align: right;
     align-items: center;
   }
   .footer {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
-    margin: 30px 0;
+    margin: 30px 0 50px;
     flex-wrap: wrap;
   }
   .tags {
-    margin-top: 10px;
+    margin-top: 30px;
     flex: 1;
     justify-content: flex-end;
     display: flex;
     align-items: center;
+    align-self: flex-end;
   }
   .tags a {
     margin-left: 2px;
@@ -180,12 +182,11 @@
   {@html article.body}
 </div>
 
-<div class="clap">
-  <p>If you enjoyed this article then let me know with a clap or two!</p>
-  <ClapButton id={article.id} claps={article.claps} />
-</div>
 <div class="footer">
-  <ShareButtons title={article.title} />
+  <div class="clap">
+    <p>If you enjoyed this article then let me know with a clap or two!</p>
+    <ClapButton id={article.id} claps={article.claps} />
+  </div>
   {#if article.tags}
     <div class="tags">
       <div class="icon">

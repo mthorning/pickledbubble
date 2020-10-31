@@ -1,6 +1,8 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
-  import FaBars from 'svelte-icons/fa/FaBars.svelte'
+  import { onMount, SvelteComponent } from 'svelte'
+  import FaInstagram from 'svelte-icons/fa/FaInstagram.svelte'
+  import FaPinterestP from 'svelte-icons/fa/FaPinterestP.svelte'
+  import FaEtsy from 'svelte-icons/fa/FaEtsy.svelte'
 
   interface Route {
     name: string
@@ -8,14 +10,21 @@
     regex: RegExp
   }
 
-  export let segment: string,
-    style: string,
-    homePageName: string = 'home',
-    isHome: boolean
+  export let segment: string, style: string
 
   const routes: Route[] = [
-    { name: 'about', href: '/about', regex: new RegExp(/about/) },
     { name: 'create', href: '/create', regex: new RegExp(/^create/) },
+    { name: 'contact', href: '/contact', regex: new RegExp(/contact/) },
+  ]
+
+  interface SocialLink {
+    component: typeof SvelteComponent
+    href: string
+  }
+  const socialLinks: SocialLink[] = [
+    { component: FaInstagram, href: '#' },
+    { component: FaPinterestP, href: '#' },
+    { component: FaEtsy, href: '#' },
   ]
 
   let open = false
@@ -38,17 +47,14 @@
 
 <style>
   nav {
-    display: flex;
-    align-items: center;
     font-weight: 300;
-    padding: 0 1em;
     box-sizing: border-box;
     width: 100%;
-    height: 57px;
     background: var(--nav-bg-color);
-    position: fixed;
     top: 0;
     z-index: var(--nav-z-index, 1);
+    position: relative;
+    height: 90px;
   }
   img {
     position: absolute;
@@ -57,9 +63,16 @@
     transform: translateX(-50%);
     height: 57px;
   }
+  @media (min-width: 600px) {
+    img {
+      height: 90px;
+    }
+  }
   ul {
     margin: 0;
     padding: 0;
+    position: absolute;
+    display: inline-block;
   }
   /* clearfix */
   ul::after {
@@ -69,112 +82,71 @@
   }
   li {
     list-style-type: none;
+    display: block;
+    float: left;
   }
-  .menu-items {
-    z-index: 10;
-    position: fixed;
-    left: 0;
-    top: 57px;
-    width: 100%;
-    height: 0;
-    overflow: hidden;
-    transition: 0.5s ease-in-out height;
-    background: var(--nav-dropdown-bg);
-    border-bottom: 1px solid var(--text-color);
-  }
-  .menu-items.open {
-    height: 150px;
-  }
-  .menu-items li a {
-    width: 100%;
+  li a {
     text-align: center;
   }
   a {
     text-decoration: none;
-    padding: 1em 0.5em;
     display: inline-block;
   }
-  button {
-    width: 3em;
-    height: 3em;
-    padding: 12px;
-    color: var(--mobile-button-color);
-    background: var(--mobile-button-bg);
-    align-self: center;
-    cursor: pointer;
-    border: 1px solid var(--mobile-button-color);
+  [aria-current] {
+    position: relative;
+    display: inline-block;
+  }
+
+  [aria-current]::after {
+    position: absolute;
+    content: '';
+    width: calc(100% - 10px);
+    height: 1px;
+    background-color: var(--nav-selected-underline-color);
+    display: block;
+    bottom: 2px;
+    left: 5px;
+  }
+  .menu-items {
+    left: 12px;
+  }
+  .menu-items li:hover {
+    color: var(--nav-item-hover-color);
+  }
+  .menu-items li a {
+    padding: 0 8px 12px;
+  }
+  .menu-items,
+  .social {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .social {
+    right: 12px;
+  }
+  .social li {
+    padding-bottom: 12px;
+  }
+  .social li a {
+    border: 1px solid var(--text-color);
     border-radius: var(--border-radius);
+    height: 15px;
+    width: 15px;
+    margin: 0 4px;
+    padding: 1px;
     display: flex;
     align-items: center;
+    justify-content: center;
   }
-  button:focus {
-    outline: none;
-  }
-  @media (min-width: 600px) {
-    nav {
-      position: static;
-      height: 90px;
-    }
-    img {
-      height: 90px;
-    }
-    button {
-      display: none;
-    }
-    .menu-items {
-      z-index: initial;
-      position: initial;
-      width: initial;
-      border-bottom: 0;
-      height: initial;
-      background: rgba(0, 0, 0, 0);
-    }
-    .menu-items li {
-      display: block;
-      float: left;
-    }
-    .menu-items li:hover {
-      color: var(--nav-item-hover-color);
-    }
-    .menu-items li a {
-      width: initial;
-    }
-    [aria-current] {
-      position: relative;
-      display: inline-block;
-    }
-
-    [aria-current]::after {
-      position: absolute;
-      content: '';
-      width: calc(100% - 10px);
-      height: 1px;
-      background-color: var(--nav-selected-underline-color);
-      display: block;
-      bottom: 2px;
-      left: 5px;
-    }
+  .social li a:hover {
+    background: var(--secondary-color);
+    border-color: var(--secondary-color);
+    color: var(--background-color);
   }
 </style>
 
 <nav {style} bind:this={nav}>
-  <button on:click={toggleOpen}>
-    <FaBars />
-  </button>
-  <ul
-    data-test="menu-items"
-    class:open
-    class="menu-items"
-    on:click={detectAnchorClick}>
-    <li>
-      <a
-        rel="prefetch"
-        aria-current={segment === undefined ? 'page' : undefined}
-        href="/">
-        {homePageName}
-      </a>
-    </li>
-    <li />
+  <ul data-test="menu-items" class="menu-items" on:click={detectAnchorClick}>
     {#each routes as route}
       <li>
         <a
@@ -186,5 +158,14 @@
       </li>
     {/each}
   </ul>
-  {#if !isHome}<img alt="pickledbubble logo" src="logo.png" />{/if}
+  <a href="/"><img alt="pickledbubble logo" src="logo.png" /></a>
+  <ul class="social">
+    {#each socialLinks as socialLink}
+      <li>
+        <a href={socialLink.href}>
+          <svelte:component this={socialLink.component} />
+        </a>
+      </li>
+    {/each}
+  </ul>
 </nav>
