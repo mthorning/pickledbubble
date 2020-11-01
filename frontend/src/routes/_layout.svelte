@@ -10,7 +10,7 @@
     max-width: 1000px;
     margin: auto;
     box-sizing: border-box;
-    padding: calc(57px + 25px) 10px 25px 10px;
+    padding: 0 10px 25px 10px;
   }
   :global(main a) {
     color: var(--primary-color);

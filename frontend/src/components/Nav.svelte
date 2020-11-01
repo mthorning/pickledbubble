@@ -108,7 +108,18 @@
     left: 5px;
   }
   .menu-items {
-    left: 12px;
+    left: 8px;
+  }
+  .social {
+    right: 8px;
+  }
+  @media (min-width: 600px) {
+    .menu-items {
+      left: 20px;
+    }
+    .social {
+      right: 20px;
+    }
   }
   .menu-items li:hover {
     color: var(--nav-item-hover-color);
@@ -120,9 +131,6 @@
   .social {
     top: 50%;
     transform: translateY(-50%);
-  }
-  .social {
-    right: 12px;
   }
   .social li {
     padding-bottom: 12px;

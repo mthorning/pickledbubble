@@ -32,19 +32,20 @@
 
 <style>
   section {
-    min-height: 100px;
     border-bottom: none;
   }
   div {
-    margin-bottom: 10px;
+    padding: 0 4px;
     min-height: 25px;
+    margin-bottom: 8px;
   }
   @media (min-width: 600px) {
     section {
       border-bottom: 1px solid var(--text-color);
+      padding-bottom: 10px;
     }
     div {
-      margin-bottom: 40px;
+      margin-bottom: 20px;
     }
   }
 </style>

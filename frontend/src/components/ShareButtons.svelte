@@ -10,6 +10,8 @@
     Twitter,
   } from 'svelte-share-buttons-component'
   import { stores } from '@sapper/app'
+  import { fly } from 'svelte/transition'
+  import { quintOut } from 'svelte/easing'
 
   export let title: string
 
@@ -25,10 +27,6 @@
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
   }
   :global(.ssbc-button--override) {
     background-color: #007c9b52;
@@ -38,7 +36,8 @@
   }
 </style>
 
-<div>
+<div
+  in:fly={{ delay: 300, duration: 500, y: 1000, opacity: 0.5, easing: quintOut }}>
   <Email class="ssbc-button--override" subject={title} body="{desc} {url}" />
   <Reddit class="ssbc-button--override" {title} {url} />
   <LinkedIn class="ssbc-button--override" {url} />

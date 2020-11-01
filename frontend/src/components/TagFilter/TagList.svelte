@@ -25,7 +25,7 @@
     padding: 0;
     margin: 0;
     width: 100%;
-    height: 50px;
+    height: 42px;
   }
   li {
     list-style-type: none;

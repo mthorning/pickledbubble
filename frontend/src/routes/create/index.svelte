@@ -29,6 +29,7 @@
   }
   ul {
     width: 100%;
+    margin-top: 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(400px, max-content));
@@ -42,7 +43,7 @@
   }
   li {
     list-style-type: none;
-    margin: 15px auto;
+    margin: 0 auto 15px;
     padding: 10px;
     box-sizing: border-box;
     width: 100%;
@@ -62,6 +63,7 @@
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: column;
+    box-shadow: 1px 5px 15px #4b4b4b;
   }
   h1,
   .bottom-row {

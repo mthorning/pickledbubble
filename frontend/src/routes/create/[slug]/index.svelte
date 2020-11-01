@@ -102,7 +102,12 @@
     display: inline-block;
     border: 1px solid var(--text-color);
     box-shadow: 1px 1px 5px var(--text-color);
-    padding: 25px;
+    padding: 10px;
+  }
+  @media (min-width: 600px) {
+    .required-items div {
+      padding: 25px;
+    }
   }
   .required-items h2 {
     margin-bottom: 25px;
