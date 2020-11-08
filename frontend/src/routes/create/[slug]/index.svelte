@@ -89,12 +89,11 @@
   .required-items div {
     margin: auto;
     text-align: left;
-    font-family: 'Caveat', cursive;
-    font-size: 25px;
+    font-family: 'selimaregular', cursive;
     background-image: linear-gradient(
         0deg,
         transparent 5em,
-        rgba(255, 0, 0, 0.2) 0,
+        rgba(35, 16, 16, 0.2) 0,
         transparent 5.1em
       ),
       linear-gradient(rgba(0, 0, 255, 0.3) 1px, transparent 0);
@@ -111,7 +110,6 @@
   }
   .required-items h2 {
     margin-bottom: 25px;
-    font-size: 43px;
     color: var(--secondary-color);
   }
   .clap {

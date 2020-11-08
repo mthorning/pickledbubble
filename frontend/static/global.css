@@ -1,4 +1,12 @@
-  @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata&display=swap');
+
+@font-face {
+  font-family: 'selimaregular';
+  src: url('selima_-webfont.woff2') format('woff2'),
+    url('selima_-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 body {
   --primary-color: #007c9b;
@@ -10,8 +18,7 @@ body {
   background-color: var(--background-color);
   color: var(--text-color);
   margin: 0;
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, Segoe UI, Oxygen,
-   Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: 'Inconsolata', monospace;
   font-size: 14px;
   line-height: 1.5;
 }
@@ -25,11 +32,16 @@ h6 {
   margin: 0 0 0.5em 0;
   font-weight: 400;
   line-height: 1.2;
+  font-family: 'selimaregular', cursive;
 }
 
 h1 {
-  font-size: 2em;
+  font-size: 2.5em;
   color: var(--primary-color);
+}
+
+h2 {
+  font-size: 2em;
 }
 
 a {
@@ -41,4 +53,3 @@ a {
     font-size: 16px;
   }
 }
-
