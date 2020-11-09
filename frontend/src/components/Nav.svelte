@@ -48,6 +48,8 @@
 <style>
   nav {
     font-weight: 300;
+    max-width: 1000px;
+    margin: auto;
     box-sizing: border-box;
     width: 100%;
     background: var(--nav-bg-color);
