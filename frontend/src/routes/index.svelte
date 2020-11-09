@@ -38,7 +38,7 @@
 <div class="container">
   <img alt="pickled bubble logo" src="logo.png" />
   <div class="buttons">
-    <a style="--color:var(--primary-color);" href="/create">create</a>
-    <a style="--color:var(--secondary-color);" href="/contact">contact</a>
+    <a style="--color:var(--primary-color);" href="/create">CREATE</a>
+    <a style="--color:var(--secondary-color);" href="/contact">CONTACT</a>
   </div>
 </div>

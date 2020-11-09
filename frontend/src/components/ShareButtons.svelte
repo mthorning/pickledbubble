@@ -41,7 +41,7 @@
   .icon {
     position: absolute;
     left: 50%;
-    bottom: -30px;
+    top: -30px;
     transform: translateX(-50%);
     cursor: pointer;
     width: 10px;
@@ -50,8 +50,7 @@
   .share-buttons {
     position: fixed;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 0;
   }
 </style>
 

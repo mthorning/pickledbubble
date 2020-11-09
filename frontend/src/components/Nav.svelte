@@ -54,18 +54,18 @@
     top: 0;
     z-index: var(--nav-z-index, 1);
     position: relative;
-    height: 90px;
+    height: 150px;
   }
   img {
     position: absolute;
     left: 50%;
     top: 0;
     transform: translateX(-50%);
-    height: 57px;
+    height: 100px;
   }
   @media (min-width: 600px) {
     img {
-      height: 90px;
+      height: 120px;
     }
   }
   ul {
@@ -129,8 +129,7 @@
   }
   .menu-items,
   .social {
-    top: 50%;
-    transform: translateY(-50%);
+    bottom: 0;
   }
   .social li {
     padding-bottom: 12px;
@@ -161,7 +160,7 @@
           rel="prefetch"
           aria-current={route.regex.test(segment) ? 'page' : undefined}
           href={route.href}>
-          {route.name}
+          {route.name.toUpperCase()}
         </a>
       </li>
     {/each}

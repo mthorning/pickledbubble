@@ -39,19 +39,19 @@ export function get(req, res, next) {
       res.writeHead(200, {
         "Content-Type": "application/json",
       });
-      const {
-        articles: [article],
-      } = response;
-
-      const data: Data = {
-        article: {
-          ...article,
-          body: marked(article.body),
-          ...(article.requiredItems ? { requiredItems: marked(article.requiredItems) } : {}),
-        }
-      }
-
-      res.end(JSON.stringify(data));
     }
+    const {
+      articles: [article],
+    } = response;
+
+    const data: Data = {
+      article: {
+        ...article,
+        body: marked(article.body),
+        ...(article.requiredItems ? { requiredItems: marked(article.requiredItems) } : {}),
+      }
+    }
+
+    res.end(JSON.stringify(data));
   });
 }

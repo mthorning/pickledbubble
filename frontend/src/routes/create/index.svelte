@@ -63,7 +63,7 @@
     border-radius: var(--border-radius);
     display: flex;
     flex-direction: column;
-    box-shadow: 1px 5px 15px #4b4b4b;
+    box-shadow: 2px 2px 12px #4b4b4b;
   }
   h1,
   .bottom-row {
