@@ -82,34 +82,53 @@
     color: var(--primary-color);
     margin-right: 4px;
   }
-  .required-items {
-    flex: 1 0 auto;
-    text-align: center;
-  }
-  .required-items div {
+
+  /* styling paper */
+  .paper {
+    position: relative;
+    margin: 20px auto;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: white;
+    box-shadow: 0px 0px 5px 0px #888;
+    background-image: repeating-linear-gradient(
+      white 0px,
+      white 24px,
+      teal 25px
+    );
+    padding-top: 6px;
+    padding-left: 56px;
+    padding-right: 16px;
+    line-height: 25px;
+    letter-spacing: 1px;
+    word-spacing: 5px;
     margin: auto;
     text-align: left;
     font-family: 'selimaregular', cursive;
-    background-image: linear-gradient(
-        0deg,
-        transparent 5em,
-        rgba(35, 16, 16, 0.2) 0,
-        transparent 5.1em
-      ),
-      linear-gradient(rgba(0, 0, 255, 0.3) 1px, transparent 0);
-    background-size: 100% 35px;
-    display: inline-block;
-    border: 1px solid var(--text-color);
     box-shadow: 1px 1px 5px var(--text-color);
-    padding: 10px;
+    display: inline-block;
   }
-  @media (min-width: 600px) {
-    .required-items div {
-      padding: 25px;
-    }
+
+  /* styling red vertical line */
+  .paper::before {
+    content: '';
+    width: 2px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 40px;
+    background-color: rgba(255, 0, 0, 0.6);
+  }
+  .required-items {
+    flex: 1 0 auto;
+    text-align: center;
+    font-size: 20px;
+  }
+  .required-items h2,
+  :global(.required-items ul) {
+    margin: 0;
   }
   .required-items h2 {
-    margin-bottom: 25px;
     color: var(--secondary-color);
   }
   .clap {
@@ -173,7 +192,7 @@
   </div>
   <div class="required-items">
     {#if article?.requiredItems}
-      <div>
+      <div class="paper">
         <h2>You Will Need:</h2>
         {@html article.requiredItems}
       </div>

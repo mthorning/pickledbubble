@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte'
   import TagList from './TagList.svelte'
+  import FaRegTimesCircle from 'svelte-icons/fa/FaRegTimesCircle.svelte'
 
   import type { Tag } from '../../routes/create/index.json'
 
@@ -35,7 +36,8 @@
     border-bottom: none;
   }
   div {
-    padding: 0 4px;
+    position: relative;
+    padding: 8px 33px 0 4px;
     min-height: 25px;
     margin-bottom: 8px;
   }
@@ -47,6 +49,25 @@
     div {
       margin-bottom: 20px;
     }
+  }
+  button {
+    height: 25px;
+    color: var(--primary-color);
+    width: 25px;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+  }
+  button:focus {
+    outline: none;
+  }
+  button:hover {
+    color: var(--secondary-color);
   }
 </style>
 
@@ -73,6 +94,8 @@
             ]
               .join(', ')
               .replace(', and,', ' and ') : currentTags[0]}:`}
+      <button
+        on:click={() => updateQueryString([])}><FaRegTimesCircle /></button>
     {/if}
   </div>
 {/if}

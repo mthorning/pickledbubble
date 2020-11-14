@@ -22,9 +22,15 @@
     href: string
   }
   const socialLinks: SocialLink[] = [
-    { component: FaInstagram, href: '#' },
-    { component: FaPinterestP, href: '#' },
-    { component: FaEtsy, href: '#' },
+    {
+      component: FaInstagram,
+      href: 'https://www.instagram.com/pickledbubble/',
+    },
+    {
+      component: FaPinterestP,
+      href: 'https://www.pinterest.co.uk/pickledbubble/_saved/',
+    },
+    { component: FaEtsy, href: '' },
   ]
 
   let open = false
@@ -170,11 +176,13 @@
   <a href="/"><img alt="pickledbubble logo" src="logo.png" /></a>
   <ul class="social">
     {#each socialLinks as socialLink}
-      <li>
-        <a href={socialLink.href}>
-          <svelte:component this={socialLink.component} />
-        </a>
-      </li>
+      {#if socialLink.href}
+        <li>
+          <a href={socialLink?.href}>
+            <svelte:component this={socialLink.component} />
+          </a>
+        </li>
+      {/if}
     {/each}
   </ul>
 </nav>
