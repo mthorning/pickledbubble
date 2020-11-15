@@ -86,7 +86,8 @@ jobs:
           port: 22
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker load -i ~/containers/${{ env.APP_NAME }}/api/image-api.tar
-            docker load -i ~/containers/${{ env.APP_NAME }}/ui/image-ui.tar
+            cd ~/containers/${{ env.APP_NAME }}
+            docker load -i api/image-api.tar
+            docker load -i ui/image-ui.tar
             docker-compose up -d --build --force-recreate --remove-orphans
             docker system prune -f
