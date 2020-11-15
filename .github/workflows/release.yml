@@ -75,7 +75,6 @@ jobs:
           target: ~/containers/${{ env.APP_NAME }}
           
   up:
-    needs: [release-ui, release-api]
     runs-on: ubuntu-latest
     steps:
       - name: load images and up
