@@ -8,7 +8,7 @@ on:
   push:
     branches: [ new-release ]
   pull_request:
-    branches: [ master ]
+    branches: [ new-release ]
 
 jobs:
   release-ui:
@@ -20,16 +20,22 @@ jobs:
       SECTION: ui
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: new-release
       - uses: actions/setup-node@v2.1.2
         with:
           node-version: '14'
           check-latest: true
       - name: install and build sapper app
         run: |
+          echo "$(pwd)"
           npm install
+          npm ls sapper
+          echo "$(ls -al)"
           npm run build
       - name: build docker image
         run: |
+          cd ui
           docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
           docker save -o ${{ env.APP_NAME }}-${{ env.SECTION }}.tar ${{ env.APP_NAME }}-${{ env.SECTION }}
       - name: copy image to server
@@ -39,20 +45,11 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: ${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: ./ui/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
-      - name: executing remote ssh commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            docker load -i ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-            rm ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
     
   release-api:
+    if: ${{ 1 == 2 }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -62,6 +59,8 @@ jobs:
       
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: new-release
       - uses: actions/setup-node@v2.1.2
         with:
           node-version: '14'
@@ -81,15 +80,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: ${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: ./api/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
-      - name: executing remote ssh commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            docker load -i ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-            rm ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
