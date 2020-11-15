@@ -31,7 +31,6 @@ jobs:
           NODE_ENV=production && npm run build
       - name: build docker image
         run: |
-          cd ui
           docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
           docker save -o ${{ env.APP_NAME }}-${{ env.SECTION }}.tar ${{ env.APP_NAME }}-${{ env.SECTION }}
       - name: copy image to server
