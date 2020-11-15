@@ -11,6 +11,7 @@ on:
 
 jobs:
   release-ui:
+    if: ${{ 1 == 2 }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -42,6 +43,7 @@ jobs:
           target: ~/containers/${{ env.APP_NAME }}
     
   release-api:
+    if: ${{ 1 == 2 }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -76,15 +78,6 @@ jobs:
     needs: [release-ui, release-api]
     runs-on: ubuntu-latest
     steps:
-      - name: upload docker-compose.yaml
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          port: 22
-          key: ${{ secrets.SSH_KEY }}
-          source: docker-compose.yaml
-          target: ~/containers/${{ env.APP_NAME }}
       - name: load images and up
         uses: appleboy/ssh-action@master
         with:
