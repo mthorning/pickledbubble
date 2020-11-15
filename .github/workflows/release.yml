@@ -10,8 +10,7 @@ on:
     branches: [ new-release ]
 
 jobs:
-  release-ui:
-    if: ${{ 1 == 2 }}
+  deploy-ui:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -41,9 +40,9 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: ui/image.tar
           target: ~/containers/${{ env.APP_NAME }}
+          overwrite: true
     
-  release-api:
-    if: ${{ 1 == 2 }}
+  deploy-api:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -73,8 +72,10 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           source: api/image.tar
           target: ~/containers/${{ env.APP_NAME }}
+          overwrite: true
           
   up:
+    needs: [deploy-ui, deploy-api]
     runs-on: ubuntu-latest
     steps:
       - name: load images and up
@@ -88,6 +89,4 @@ jobs:
             docker load -i ~/containers/${{ env.APP_NAME }}/api/image.tar
             docker load -i ~/containers/${{ env.APP_NAME }}/ui/image.tar
             docker-compose up -d --build --force-recreate --remove-orphans
-            rm -rf ~/containers/${{ env.APP_NAME }}/api
-            rm -rf ~/containers/${{ env.APP_NAME }}/ui
             docker system prune -f
