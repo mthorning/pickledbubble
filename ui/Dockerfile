@@ -6,8 +6,8 @@ COPY package.json .
 COPY package-lock.json .
 COPY __sapper__/build __sapper__/build
 COPY static static
-COPY node_modules  node_modules
 
+CMD npm ci
 CMD npm start
 
 

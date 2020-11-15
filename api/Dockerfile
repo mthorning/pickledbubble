@@ -9,8 +9,8 @@ COPY config config
 COPY exports exports
 COPY extensions extensions
 COPY build build
-COPY node_modules node_modules
 
+CMD npm ci
 CMD npm start
 
 

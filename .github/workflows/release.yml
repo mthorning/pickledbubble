@@ -24,7 +24,7 @@ jobs:
       - name: install and build sapper app
         working-directory: ui
         run: |
-          npm ci
+          npm install
           npm run build
       - name: build docker image
         working-directory: ui
@@ -64,7 +64,7 @@ jobs:
             check-latest: true
         - name: install and build strapi
           run: |
-            npm ci
+            npm install
             npm run build
         - name: build docker image
           run: |
