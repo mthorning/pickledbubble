@@ -28,10 +28,9 @@ jobs:
           check-latest: true
       - name: install and build sapper app
         run: |
-          echo "$(pwd)"
+          ls -al
           npm install
-          npm ls sapper
-          echo "$(ls -al)"
+          npm ls
           npm run build
       - name: build docker image
         run: |
