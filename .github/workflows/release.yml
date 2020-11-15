@@ -25,9 +25,8 @@ jobs:
           node-version: '14'
           check-latest: true
       - name: install and build sapper app
-        run: |
-          npm install
-          npm run build
+        run: npm install
+      - run: npm run build
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
