@@ -30,7 +30,7 @@ jobs:
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-ui .
-          docker save -o image.tar ${{ env.APP_NAME }}-ui
+          docker save -o image-ui.tar ${{ env.APP_NAME }}-ui
       - name: copy image to server
         uses: appleboy/scp-action@master
         with:
@@ -38,7 +38,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: 22
           key: ${{ secrets.SSH_KEY }}
-          source: ui/image.tar
+          source: ui/image-ui.tar
           target: ~/containers/${{ env.APP_NAME }}
           overwrite: true
     
@@ -62,7 +62,7 @@ jobs:
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-api .
-          docker save -o image.tar ${{ env.APP_NAME }}-api
+          docker save -o image-api.tar ${{ env.APP_NAME }}-api
       - name: copy image to server
         uses: appleboy/scp-action@master
         with:
@@ -70,7 +70,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: 22
           key: ${{ secrets.SSH_KEY }}
-          source: api/image.tar
+          source: api/image-api.tar
           target: ~/containers/${{ env.APP_NAME }}
           overwrite: true
           
@@ -86,7 +86,7 @@ jobs:
           port: 22
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker load -i ~/containers/${{ env.APP_NAME }}/api/image.tar
-            docker load -i ~/containers/${{ env.APP_NAME }}/ui/image.tar
+            docker load -i ~/containers/${{ env.APP_NAME }}/api/image-api.tar
+            docker load -i ~/containers/${{ env.APP_NAME }}/ui/image-ui.tar
             docker-compose up -d --build --force-recreate --remove-orphans
             docker system prune -f
