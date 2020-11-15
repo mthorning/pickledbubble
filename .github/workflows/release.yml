@@ -2,7 +2,6 @@ name: CI
 
 env:
   APP_NAME: pickledbubble
-  NODE_ENV: production
 
 on:
   push:
@@ -11,13 +10,11 @@ on:
     branches: [ new-release ]
 
 jobs:
-  release-ui:
+  deploy-ui:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ui
-    env:
-      SECTION: ui
     steps:
       - uses: actions/checkout@v2
         with:
@@ -28,34 +25,28 @@ jobs:
           check-latest: true
       - name: install and build sapper app
         run: |
-          ls -al
           npm install
-          npm ls
-          npm run build
+          NODE_ENV=production && npm run build
       - name: build docker image
         run: |
-          cd ui
-          docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
-          docker save -o ${{ env.APP_NAME }}-${{ env.SECTION }}.tar ${{ env.APP_NAME }}-${{ env.SECTION }}
+          docker build --tag ${{ env.APP_NAME }}-ui .
+          docker save -o image-ui.tar ${{ env.APP_NAME }}-ui
       - name: copy image to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           key: ${{ secrets.SSH_KEY }}
-          source: ./ui/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: ui/image-ui.tar
           target: ~/containers/${{ env.APP_NAME }}
+          overwrite: true
     
-  release-api:
-    if: ${{ 1 == 2 }}
+  deploy-api:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: api
-    env:
-      SECTION: api
-      
+        working-directory: api 
     steps:
       - uses: actions/checkout@v2
         with:
@@ -67,17 +58,36 @@ jobs:
       - name: install and build strapi
         run: |
           npm install
-          npm run build
+          NODE_ENV=production && npm run build
       - name: build docker image
         run: |
-          docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
-          docker save -o ${{ env.APP_NAME }}-${{ env.SECTION }}.tar ${{ env.APP_NAME }}-${{ env.SECTION }}
+          docker build --tag ${{ env.APP_NAME }}-api .
+          docker save -o image-api.tar ${{ env.APP_NAME }}-api
       - name: copy image to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           key: ${{ secrets.SSH_KEY }}
-          source: ./api/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: api/image-api.tar
           target: ~/containers/${{ env.APP_NAME }}
+          overwrite: true
+          
+  up:
+    needs: [deploy-ui, deploy-api]
+    runs-on: ubuntu-latest
+    steps:
+      - name: load images and up
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            cd ~/containers/${{ env.APP_NAME }}
+            docker load -i api/image-api.tar
+            docker load -i ui/image-ui.tar
+            docker-compose up -d --build --force-recreate --remove-orphans
+            docker system prune -f
