@@ -86,6 +86,7 @@ jobs:
           script: |
             docker load -i ~/containers/${{ env.APP_NAME }}/api/image.tar
             docker load -i ~/containers/${{ env.APP_NAME }}/ui/image.tar
+            docker-compose up -d --build --force-recreate --remove-orphans
             rm -rf ~/containers/${{ env.APP_NAME }}/api
             rm -rf ~/containers/${{ env.APP_NAME }}/ui
             docker system prune -f
