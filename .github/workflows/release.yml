@@ -38,7 +38,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           key: ${{ secrets.SSH_KEY }}
           source: ui/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
@@ -72,7 +72,7 @@ jobs:
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           key: ${{ secrets.SSH_KEY }}
           source: api/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
