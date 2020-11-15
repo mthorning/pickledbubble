@@ -32,7 +32,6 @@ export default {
         'process.env.NODE_ENV': JSON.stringify(mode),
         'process.env.PORT': JSON.stringify(process.env.PORT),
         'process.env.EMAIL_ADDRESS': JSON.stringify(process.env.EMAIL_ADDRESS),
-        'process.env.PAYPAL_ID': JSON.stringify(process.env.PAYPAL_ID),
       }),
       svelte({
         dev,
@@ -45,36 +44,10 @@ export default {
         browser: true,
         dedupe: ['svelte'],
       }),
-      // commonjs(),
-
-      // legacy &&
-      //   babel({
-      //     extensions: ['.js', '.mjs', '.html', '.svelte'],
-      //     babelHelpers: 'runtime',
-      //     exclude: ['node_modules/@babel/**'],
-      //     presets: [
-      //       [
-      //         '@babel/preset-env',
-      //         {
-      //           targets: '> 0.25%, not dead',
-      //         },
-      //       ],
-      //     ],
-      //     plugins: [
-      //       '@babel/plugin-syntax-dynamic-import',
-      //       [
-      //         '@babel/plugin-transform-runtime',
-      //         {
-      //           useESModules: true,
-      //         },
-      //       ],
-      //     ],
-      //   }),
-
       !dev &&
         terser({
           module: true,
-        })
+        }),
     ],
 
     preserveEntrySignatures: false,
@@ -99,7 +72,6 @@ export default {
       resolve({
         dedupe: ['svelte'],
       }),
-      // commonjs(),
     ],
     external: Object.keys(pkg.dependencies).concat(
       require('module').builtinModules

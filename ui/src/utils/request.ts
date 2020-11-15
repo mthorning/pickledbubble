@@ -1,7 +1,6 @@
 import { gql, request as authReqest, GraphQLClient } from "graphql-request";
 
 import type { Response } from 'express'
-import type { resolve } from "path";
 
 const endpoint = `${process.env.API_URL}/graphql`
 

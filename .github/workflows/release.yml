@@ -2,6 +2,7 @@ name: CI
 
 env:
   APP_NAME: pickledbubble
+  EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
 
 on:
   push:
