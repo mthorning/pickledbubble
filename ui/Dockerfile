@@ -7,7 +7,7 @@ COPY package-lock.json .
 COPY __sapper__/build __sapper__/build
 COPY static static
 
-CMD npm ci
+RUN npm ci
 CMD npm start
 
 

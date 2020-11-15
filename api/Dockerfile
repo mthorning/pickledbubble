@@ -10,7 +10,7 @@ COPY exports exports
 COPY extensions extensions
 COPY build build
 
-CMD npm ci
+RUN npm ci
 CMD npm start
 
 
