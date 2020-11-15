@@ -2,6 +2,7 @@ name: CI
 
 env:
   APP_NAME: pickledbubble
+  NODE_ENV: production
 
 on:
   push:
