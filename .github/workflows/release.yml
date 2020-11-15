@@ -28,10 +28,10 @@ jobs:
           check-latest: true
       - name: install and build sapper app
         run: |
-          pwd
+          echo "$(pwd)"
           npm install
           npm ls sapper
-          ls -al
+          echo "$(ls -al)"
           npm run build
       - name: build docker image
         run: |
@@ -49,6 +49,7 @@ jobs:
           target: ~/containers/${{ env.APP_NAME }}
     
   release-api:
+    if: ${{ 1 == 2 }}
     runs-on: ubuntu-latest
     defaults:
       run:
