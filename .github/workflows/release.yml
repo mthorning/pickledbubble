@@ -5,16 +5,16 @@ env:
 
 on:
   push:
-    branches: [ new-release ]
+    branches: [ master]
   pull_request:
     branches: [ master ]
 
 jobs:
-  release-ui:
-    env:
-      SECTION: ui
+  deploy-ui:
     runs-on: ubuntu-latest
-    
+    defaults:
+      run:
+        working-directory: ui
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2.1.2
@@ -22,71 +22,68 @@ jobs:
           node-version: '14'
           check-latest: true
       - name: install and build sapper app
-        working-directory: ui
         run: |
-          npm ci
-          npm run build
+          npm install
+          NODE_ENV=production && npm run build
       - name: build docker image
-        working-directory: ui
         run: |
-          docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
-          docker save -o ${{ env.APP_NAME }}-${{ env.SECTION }}.tar ${{ env.APP_NAME }}-${{ env.SECTION }}
+          docker build --tag ${{ env.APP_NAME }}-ui .
+          docker save -o image-ui.tar ${{ env.APP_NAME }}-ui
       - name: copy image to server
         uses: appleboy/scp-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           key: ${{ secrets.SSH_KEY }}
-          source: ${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: ui/image-ui.tar
           target: ~/containers/${{ env.APP_NAME }}
-      - name: executing remote ssh commands
+          overwrite: true
+    
+  deploy-api:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api 
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2.1.2
+        with:
+          node-version: '14'
+          check-latest: true
+      - name: install and build strapi
+        run: |
+          npm install
+          NODE_ENV=production && npm run build
+      - name: build docker image
+        run: |
+          docker build --tag ${{ env.APP_NAME }}-api .
+          docker save -o image-api.tar ${{ env.APP_NAME }}-api
+      - name: copy image to server
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          port: 22
+          key: ${{ secrets.SSH_KEY }}
+          source: api/image-api.tar
+          target: ~/containers/${{ env.APP_NAME }}
+          overwrite: true
+          
+  up:
+    needs: [deploy-ui, deploy-api]
+    runs-on: ubuntu-latest
+    steps:
+      - name: load images and up
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
-          port: ${{ secrets.SSH_PORT }}
+          port: 22
           key: ${{ secrets.SSH_KEY }}
           script: |
-            docker load -i ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-            rm ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+            cd ~/containers/${{ env.APP_NAME }}
+            docker load -i api/image-api.tar
+            docker load -i ui/image-ui.tar
+            docker-compose up -d --build --force-recreate --remove-orphans
             docker system prune -f
-    
-  release-api:
-      env:
-        SECTION: api
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - uses: actions/setup-node@v2.1.2
-          with:
-            node-version: '14'
-            check-latest: true
-        - name: install and build strapi
-          run: |
-            npm ci
-            npm run build
-        - name: build docker image
-          run: |
-            docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
-            docker save -o ${{ env.APP_NAME }}-${{ env.SECTION }}.tar ${{ env.APP_NAME }}-${{ env.SECTION }}
-        - name: copy image to server
-          uses: appleboy/scp-action@master
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USERNAME }}
-            port: ${{ secrets.SSH_PORT }}
-            key: ${{ secrets.SSH_KEY }}
-            source: ${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-            target: ~/containers/${{ env.APP_NAME }}
-        - name: executing remote ssh commands
-          uses: appleboy/ssh-action@master
-          with:
-            host: ${{ secrets.SSH_HOST }}
-            username: ${{ secrets.SSH_USERNAME }}
-            port: ${{ secrets.SSH_PORT }}
-            key: ${{ secrets.SSH_KEY }}
-            script: |
-              docker load -i ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-              rm ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-              docker system prune -f
