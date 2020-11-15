@@ -2,6 +2,7 @@ name: CI
 
 env:
   APP_NAME: pickledbubble
+  PUBLIC_URL: https://pickledbubble.thorning.ovh
 
 on:
   push:
