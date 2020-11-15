@@ -40,7 +40,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: ./ui/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: ui/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
     
   release-api:
@@ -74,5 +74,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: ./api/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: api/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
