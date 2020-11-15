@@ -8,7 +8,7 @@ on:
   push:
     branches: [ new-release ]
   pull_request:
-    branches: [ master ]
+    branches: [ new-release ]
 
 jobs:
   release-ui:
@@ -20,12 +20,13 @@ jobs:
       SECTION: ui
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: new-release
       - uses: actions/setup-node@v2.1.2
         with:
           node-version: '14'
           check-latest: true
       - name: install and build sapper app
-        working-directory: ./ui
         run: |
           npm install
           npm run build
@@ -63,6 +64,8 @@ jobs:
       
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: new-release
       - uses: actions/setup-node@v2.1.2
         with:
           node-version: '14'
