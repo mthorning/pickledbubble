@@ -13,9 +13,6 @@ on:
 jobs:
   release-ui:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ui
     env:
       SECTION: ui
     steps:
@@ -28,10 +25,12 @@ jobs:
           check-latest: true
       - name: install and build sapper app
         run: |
+          cd ui
           npm install
           npm run build
       - name: build docker image
         run: |
+          cd ui
           docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
           docker save -o ${{ env.APP_NAME }}-${{ env.SECTION }}.tar ${{ env.APP_NAME }}-${{ env.SECTION }}
       - name: copy image to server
@@ -41,18 +40,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: ${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: ./ui/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
-      - name: executing remote ssh commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          port: 22
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            docker load -i ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-            rm ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
     
   release-api:
     runs-on: ubuntu-latest
@@ -85,15 +74,5 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           port: ${{ secrets.SSH_PORT }}
           key: ${{ secrets.SSH_KEY }}
-          source: ${{ env.APP_NAME }}-${{ env.SECTION }}.tar
+          source: ./api/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
           target: ~/containers/${{ env.APP_NAME }}
-      - name: executing remote ssh commands
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          port: 22
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            docker load -i ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
-            rm ~/containers/${{ env.APP_NAME }}/${{ env.APP_NAME }}-${{ env.SECTION }}.tar
