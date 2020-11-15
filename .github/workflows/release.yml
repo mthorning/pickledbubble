@@ -13,6 +13,9 @@ on:
 jobs:
   release-ui:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: api
     env:
       SECTION: ui
     steps:
@@ -25,8 +28,9 @@ jobs:
           check-latest: true
       - name: install and build sapper app
         run: |
-          cd ui
+          pwd
           npm install
+          npm ls sapper
           npm run build
       - name: build docker image
         run: |
