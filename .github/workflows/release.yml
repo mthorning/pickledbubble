@@ -30,7 +30,7 @@ jobs:
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-ui .
-          docker save -o image.tar ${{ env.APP_NAME }}
+          docker save -o image.tar ${{ env.APP_NAME }}-ui
       - name: copy image to server
         uses: appleboy/scp-action@master
         with:
@@ -61,7 +61,7 @@ jobs:
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-api .
-          docker save -o image.tar ${{ env.APP_NAME }}
+          docker save -o image.tar ${{ env.APP_NAME }}-api
       - name: copy image to server
         uses: appleboy/scp-action@master
         with:
