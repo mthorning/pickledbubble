@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ui
+        working-directory: ./ui
     env:
       SECTION: ui
     steps:
@@ -27,7 +27,7 @@ jobs:
       - name: install and build sapper app
         run: |
           npm install
-          npx sapper build --legacy
+          npm run build
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
@@ -56,7 +56,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: api
+        working-directory: ./api
     env:
       SECTION: api
       
@@ -69,7 +69,7 @@ jobs:
       - name: install and build strapi
         run: |
           npm install
-          npx strapi build
+          npm run build
       - name: build docker image
         run: |
           docker build --tag ${{ env.APP_NAME }}-${{ env.SECTION }} .
