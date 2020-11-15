@@ -31,7 +31,7 @@ jobs:
           pwd
           npm install
           npm ls sapper
-          cat package.json
+          ls -al
           npm run build
       - name: build docker image
         run: |
