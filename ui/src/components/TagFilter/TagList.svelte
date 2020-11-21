@@ -2,6 +2,7 @@
   import type { Tag } from '../../routes/create/index.json'
 
   export let tags: Tag[],
+    dataLoaded: boolean,
     currentTags: string[] = [],
     style: string,
     updateQueryString: (newSelected: string[]) => void
@@ -12,6 +13,7 @@
   }, [])
 
   function onTagClick(clickedTag: Tag) {
+    if (!dataLoaded) return
     if (currentTags?.includes(clickedTag.name)) {
       updateQueryString(currentTags.filter((name) => clickedTag.name !== name))
     } else {
@@ -44,11 +46,18 @@
     background-color: var(--color);
     color: var(--background-color);
   }
+  .notLoaded,
+  .notLoaded:hover {
+    background-color: var(--background-color);
+    border-color: #dbdbdb;
+    color: #dbdbdb;
+  }
 </style>
 
 <ul {style}>
   {#each uniqueTags as tag}
     <li
+      class:notLoaded={!dataLoaded}
       class:selected={currentTags?.includes(tag.name)}
       class="type"
       on:click={() => onTagClick(tag)}>

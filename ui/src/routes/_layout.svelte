@@ -1,7 +1,9 @@
 <script>
   import Nav from '../components/Nav.svelte'
+  import { stores } from '@sapper/app'
 
   export let segment
+  const { page } = stores()
 </script>
 
 <style>
@@ -26,19 +28,8 @@
   }
 </style>
 
-{#if segment}
-  <Nav
-    style={`
-      --nav-bg-color: var(--background-color);
-      --nav-dropdown-bg: var(--background-color);
-      --nav-dropdown-border: #aaa; 
-      --mobile-button-bg: rgba(255, 255, 255, 0.05);
-      --mobile-button-color: var(--text-color);
-      --nav-selected-underline-color: var(--secondary-color);
-      --nav-z-index: 110;
-      --nav-item-hover-color: var(--secondary-color);
-    `}
-    {segment} />
+{#if segment || $page.error}
+  <Nav {segment} />
 {/if}
 
 <main>

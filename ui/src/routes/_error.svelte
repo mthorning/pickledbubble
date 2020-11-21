@@ -6,25 +6,16 @@
 </script>
 
 <style>
+  div {
+    max-width: 600px;
+    margin: 30px auto;
+  }
   h1,
   p {
     margin: 0 auto;
   }
-
-  h1 {
-    font-size: 2.8em;
-    font-weight: 700;
-    margin: 0 0 0.5em 0;
-  }
-
   p {
     margin: 1em auto;
-  }
-
-  @media (min-width: 600px) {
-    h1 {
-      font-size: 4em;
-    }
   }
 </style>
 
@@ -32,10 +23,14 @@
   <title>{status}</title>
 </svelte:head>
 
-<h1>{status}</h1>
+<div>
+  <h1>{error?.message ?? 'Uh oh!'}</h1>
 
-<p>{error.message}</p>
-
-{#if dev && error.stack}
-  <pre>{error.stack}</pre>
-{/if}
+  <p>
+    It looks like something has gone wrong! Please return to the
+    <a href="/">homepage</a>
+    or
+    <a href="/contact">contact us</a>
+    if you need help.
+  </p>
+</div>

@@ -10,7 +10,7 @@
     regex: RegExp
   }
 
-  export let segment: string, style: string
+  export let segment: string
 
   const routes: Route[] = [
     { name: 'create', href: '/create', regex: new RegExp(/^create/) },
@@ -49,6 +49,17 @@
     const element = e.target as HTMLElement
     if (element.tagName === 'A') open = false
   }
+
+  const style = `
+      --nav-bg-color: var(--background-color);
+      --nav-dropdown-bg: var(--background-color);
+      --nav-dropdown-border: #aaa; 
+      --mobile-button-bg: rgba(255, 255, 255, 0.05);
+      --mobile-button-color: var(--text-color);
+      --nav-selected-underline-color: var(--secondary-color);
+      --nav-z-index: 110;
+      --nav-item-hover-color: var(--secondary-color);
+    `
 </script>
 
 <style>

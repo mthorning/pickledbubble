@@ -1,11 +1,16 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
+  import { onMount, createEventDispatcher } from 'svelte'
+  import { stores } from '@sapper/app'
   import TagList from './TagList.svelte'
   import FaRegTimesCircle from 'svelte-icons/fa/FaRegTimesCircle.svelte'
 
   import type { Tag } from '../../routes/create/index.json'
 
+  const dispatch = createEventDispatcher()
+  const { page } = stores()
+
   export let tags: { [category: string]: Tag[] },
+    dataLoaded: boolean,
     numArticles: number = 0
 
   const queryKey = 'tags'
@@ -25,7 +30,12 @@
     } else {
       params.delete(queryKey)
     }
-    window.location.search = params.toString()
+
+    let newTags = params.toString()
+    if (newTags) newTags = `?${newTags}`
+    window.history.pushState(newSelected, 'filters', `${$page.path}${newTags}`)
+    dispatch('filterChange', newTags)
+    currentTags = [...tagsToSet]
   }
 
   const pluralise = (str: string, num: number) => `${str}${num > 1 ? 's' : ''}`
@@ -74,19 +84,21 @@
 {#if tags.type?.length || tags.theme?.length}
   <section>
     <TagList
+      {dataLoaded}
       tags={tags.type}
       style="--color: var(--primary-color);"
       {updateQueryString}
       {currentTags} />
 
     <TagList
+      {dataLoaded}
       tags={tags.theme}
       style="--color: var(--secondary-color);"
       {updateQueryString}
       {currentTags} />
   </section>
   <div>
-    {#if currentTags.length}
+    {#if currentTags.length && dataLoaded}
       {`Found ${numArticles} ${pluralise('post', numArticles)} with the ${pluralise('tag', currentTags.length)} ${currentTags.length > 1 ? [
               ...currentTags.slice(0, currentTags.length - 1),
               'and',
