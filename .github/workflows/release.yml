@@ -5,11 +5,7 @@ env:
   PUBLIC_URL: https://pickledbubble.thorning.ovh
   EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
 
-on:
-  push:
-    branches: [ master]
-  pull_request:
-    branches: [ master ]
+on: workflow_dispatch
 
 jobs:
   deploy-ui:
@@ -87,5 +83,5 @@ jobs:
             cd ~/containers/${{ env.APP_NAME }}
             docker load -i api/image-api.tar
             docker load -i ui/image-ui.tar
-            docker-compose up -d --build --force-recreate --remove-orphans
+            docker-compose up -d --no-deps api ui
             docker system prune -f
