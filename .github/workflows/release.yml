@@ -79,6 +79,7 @@ jobs:
           overwrite: true
           
   ui-up:
+    name: UI up
     if: github.event.inputs.with-api != 'y'
     needs: deploy-ui
     runs-on: ubuntu-latest
@@ -97,6 +98,7 @@ jobs:
             docker-compose up -d --no-deps ui
             docker system prune -f
   all-up:
+    name: All up
     if: github.event.inputs.with-api == 'y'
     needs: [deploy-ui, deploy-api]
     runs-on: ubuntu-latest
