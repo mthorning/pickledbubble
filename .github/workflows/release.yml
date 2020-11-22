@@ -49,8 +49,6 @@ jobs:
   deploy-api:
     name: Deploy API
     if: github.event.inputs.with-api == 'y'
-    env:
-      SERVICES_TO_RELEASE: 'api ui'
     runs-on: ubuntu-latest
     defaults:
       run:
