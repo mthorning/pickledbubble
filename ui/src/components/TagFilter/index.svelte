@@ -83,6 +83,9 @@
   button.fetching {
     color: #dbdbdb;
   }
+  .tag-txt {
+    user-select: none;
+  }
 </style>
 
 {#if tags.type?.length || tags.theme?.length}
@@ -103,13 +106,15 @@
   </section>
   <div>
     {#if currentTags.length}
-      {`Found ${numArticles} ${pluralise('post', numArticles)} with the ${pluralise('tag', currentTags.length)} ${currentTags.length > 1 ? [
-              ...currentTags.slice(0, currentTags.length - 1),
-              'and',
-              ...currentTags.slice(-1),
-            ]
-              .join(', ')
-              .replace(', and,', ' and ') : currentTags[0]}:`}
+      <span class="tag-txt">
+        {`Found ${numArticles} ${pluralise('post', numArticles)} with the ${pluralise('tag', currentTags.length)} ${currentTags.length > 1 ? [
+                ...currentTags.slice(0, currentTags.length - 1),
+                'and',
+                ...currentTags.slice(-1),
+              ]
+                .join(', ')
+                .replace(', and,', ' and ') : currentTags[0]}:`}
+      </span>
       <button
         class:fetching={!dataLoaded}
         on:click={() => updateQueryString([])}><FaRegTimesCircle /></button>

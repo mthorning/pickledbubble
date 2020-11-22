@@ -52,6 +52,7 @@
     grid-template-columns: repeat(auto-fill, minmax(400px, max-content));
     grid-gap: 16px;
     justify-content: space-around;
+    justify-items: stretch;
   }
   @media (max-width: 600px) {
     ul {
@@ -60,13 +61,10 @@
   }
   li {
     list-style-type: none;
-    margin: 0 auto 15px;
     padding: 10px;
     box-sizing: border-box;
-    width: 100%;
     max-width: 400px;
     height: 300px;
-    flex: 0 1 auto;
   }
   a {
     box-sizing: border-box;

@@ -40,10 +40,16 @@
     border-color: var(--color);
     user-select: none;
   }
-  li:hover,
   .selected {
     background-color: var(--color);
     color: var(--background-color);
+  }
+  @media (hover: hover) {
+    li:hover,
+    .selected {
+      background-color: var(--color);
+      color: var(--background-color);
+    }
   }
   .fetching,
   .fetching:hover {
