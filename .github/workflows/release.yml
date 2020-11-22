@@ -4,6 +4,7 @@ env:
   APP_NAME: pickledbubble
   PUBLIC_URL: https://pickledbubble.thorning.ovh
   EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
+  SERVICES_TO_RELEASE: ui
 
 on: 
   workflow_dispatch:
@@ -47,6 +48,8 @@ jobs:
     
   deploy-api:
     if: github.event.inputs.with-api == 'y'
+    env:
+      SERVICES_TO_RELEASE: 'api ui'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -91,5 +94,5 @@ jobs:
             cd ~/containers/${{ env.APP_NAME }}
             docker load -i api/image-api.tar
             docker load -i ui/image-ui.tar
-            docker-compose up -d --no-deps ui ${{ github.event.inputs.with-api == 'y' && "api" }}
+            docker-compose up -d --no-deps ui ${{ env.SERVICES_TO_RELEASE }}
             docker system prune -f
