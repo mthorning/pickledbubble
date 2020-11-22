@@ -5,7 +5,14 @@ env:
   PUBLIC_URL: https://pickledbubble.thorning.ovh
   EMAIL_ADDRESS: ${{ secrets.EMAIL_ADDRESS }}
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    inputs:
+      with-api:
+        description: 'Release API? (y/n)'
+        required: false
+        default: false
+    
 
 jobs:
   deploy-ui:
@@ -39,6 +46,7 @@ jobs:
           overwrite: true
     
   deploy-api:
+    if: github.event.inputs.with-api == 'y'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -83,5 +91,5 @@ jobs:
             cd ~/containers/${{ env.APP_NAME }}
             docker load -i api/image-api.tar
             docker load -i ui/image-ui.tar
-            docker-compose up -d --no-deps api ui
+            docker-compose up -d --no-deps ui ${{ github.event.inputs.with-api == 'y' && "api" }}
             docker system prune -f
