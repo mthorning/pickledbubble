@@ -11,7 +11,7 @@ on:
       with-api:
         description: 'Release API? (y/n)'
         required: false
-        default: false
+        default: n
     
 
 jobs:
