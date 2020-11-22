@@ -94,5 +94,5 @@ jobs:
             cd ~/containers/${{ env.APP_NAME }}
             docker load -i api/image-api.tar
             docker load -i ui/image-ui.tar
-            docker-compose up -d --no-deps ui ${{ env.SERVICES_TO_RELEASE }}
+            docker-compose up -d --no-deps ${{ env.SERVICES_TO_RELEASE }}
             docker system prune -f
