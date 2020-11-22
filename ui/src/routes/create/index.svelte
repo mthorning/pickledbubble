@@ -25,15 +25,17 @@
   $: articles = data.articles
   $: tags = data.tags
 
-  async function getArticles(event: CustomEvent) {
+  function getArticles(newTags: string) {
     dataLoaded = false
-    try {
-      const res = await fetch(`/create.json${event.detail}`)
-      data = await res.json()
-      dataLoaded = true
-    } catch (err) {
-      error = true
-    }
+    return fetch(`/create.json${newTags}`)
+      .then((res) => res.json())
+      .then((json) => {
+        data = json
+        dataLoaded = true
+      })
+      .catch(() => {
+        error = true
+      })
   }
 </script>
 
@@ -131,11 +133,7 @@
 </svelte:head>
 
 <section>
-  <TagFilter
-    {tags}
-    {dataLoaded}
-    on:filterChange={getArticles}
-    numArticles={articles.length} />
+  <TagFilter {tags} {dataLoaded} {getArticles} numArticles={articles.length} />
 
   {#if !articles || !articles.length}
     <p>No posts here, check back soon!</p>

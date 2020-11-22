@@ -1,17 +1,17 @@
 <script lang="ts">
-  import { onMount, createEventDispatcher } from 'svelte'
+  import { onMount } from 'svelte'
   import { stores } from '@sapper/app'
   import TagList from './TagList.svelte'
   import FaRegTimesCircle from 'svelte-icons/fa/FaRegTimesCircle.svelte'
 
   import type { Tag } from '../../routes/create/index.json'
 
-  const dispatch = createEventDispatcher()
   const { page } = stores()
 
   export let tags: { [category: string]: Tag[] },
     dataLoaded: boolean,
-    numArticles: number = 0
+    numArticles: number = 0,
+    getArticles: (newTags: string) => Promise<void>
 
   const queryKey = 'tags'
 
@@ -23,7 +23,8 @@
     currentTags = params.get(queryKey)?.split(',') ?? []
   })
 
-  function updateQueryString(newSelected: string[]) {
+  async function updateQueryString(newSelected: string[]) {
+    if (!dataLoaded) return
     const tagsToSet = Array.from(new Set(newSelected.filter((name) => !!name)))
     if (tagsToSet.length) {
       params.set(queryKey, tagsToSet.join(','))
@@ -34,7 +35,7 @@
     let newTags = params.toString()
     if (newTags) newTags = `?${newTags}`
     window.history.pushState(newSelected, 'filters', `${$page.path}${newTags}`)
-    dispatch('filterChange', newTags)
+    await getArticles(newTags)
     currentTags = [...tagsToSet]
   }
 
@@ -79,26 +80,29 @@
   button:hover {
     color: var(--secondary-color);
   }
+  button.fetching {
+    color: #dbdbdb;
+  }
 </style>
 
 {#if tags.type?.length || tags.theme?.length}
   <section>
     <TagList
-      {dataLoaded}
+      fetching={!dataLoaded}
       tags={tags.type}
       style="--color: var(--primary-color);"
       {updateQueryString}
       {currentTags} />
 
     <TagList
-      {dataLoaded}
+      fetching={!dataLoaded}
       tags={tags.theme}
       style="--color: var(--secondary-color);"
       {updateQueryString}
       {currentTags} />
   </section>
   <div>
-    {#if currentTags.length && dataLoaded}
+    {#if currentTags.length}
       {`Found ${numArticles} ${pluralise('post', numArticles)} with the ${pluralise('tag', currentTags.length)} ${currentTags.length > 1 ? [
               ...currentTags.slice(0, currentTags.length - 1),
               'and',
@@ -107,6 +111,7 @@
               .join(', ')
               .replace(', and,', ' and ') : currentTags[0]}:`}
       <button
+        class:fetching={!dataLoaded}
         on:click={() => updateQueryString([])}><FaRegTimesCircle /></button>
     {/if}
   </div>
