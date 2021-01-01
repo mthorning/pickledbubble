@@ -63,8 +63,10 @@
     list-style-type: none;
     padding: 10px;
     box-sizing: border-box;
+    width: 100%;
     max-width: 400px;
     height: 300px;
+    flex: 0 1 auto;
   }
   a {
     box-sizing: border-box;
